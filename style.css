@@ -622,16 +622,19 @@ h1{
   }
 }
 /* ====================== */
-/* 最終修正版：不切字、無右側捲軸 */
+/* 真正一頁完整顯示版 */
 /* ====================== */
+
+:root{
+  --ui-scale: .84;
+}
 
 html,
 body{
   width:100%;
-  min-height:100%;
+  height:100%;
   margin:0;
-  overflow-x:hidden !important;
-  overflow-y:auto !important;
+  overflow:hidden !important;
   scrollbar-width:none;
 }
 
@@ -641,136 +644,138 @@ body::-webkit-scrollbar{
 }
 
 body{
-  position:relative !important;
-  min-height:100vh;
+  position:fixed !important;
+  inset:0 !important;
 }
 
 .app{
-  width:100%;
-  min-height:100vh;
-  padding:68px 18px 40px !important;
+  width:100vw !important;
+  height:100dvh !important;
+  min-height:100dvh !important;
+  padding:58px 18px 0 !important;
   display:flex !important;
-  justify-content:center;
-  align-items:flex-start;
-  overflow:visible !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  overflow:hidden !important;
 }
 
 .hero{
   width:min(1050px,100%) !important;
   height:auto !important;
-  min-height:auto !important;
   overflow:visible !important;
-  transform:none !important;
+  transform:scale(var(--ui-scale)) !important;
+  transform-origin:top center !important;
 }
 
-/* 宮殿 */
+/* 上方宮殿 */
 .temple-gate{
-  height:82px !important;
+  height:70px !important;
 }
 
 .roof{
-  height:52px !important;
+  height:46px !important;
 }
 
 .roof::before{
-  height:14px !important;
-  top:6px !important;
+  height:12px !important;
+  top:5px !important;
 }
 
 .roof::after{
-  font-size:14px !important;
-  bottom:5px !important;
+  font-size:13px !important;
+  bottom:4px !important;
 }
 
 .lantern{
-  top:36px !important;
-  width:42px !important;
-  height:56px !important;
-  font-size:20px !important;
+  top:32px !important;
+  width:38px !important;
+  height:50px !important;
+  font-size:18px !important;
 }
 
 /* 標題 */
 h1{
-  font-size:64px !important;
-  line-height:1.05 !important;
+  font-size:58px !important;
+  line-height:1 !important;
 }
 
 .subtitle{
-  margin-top:5px !important;
-  font-size:20px !important;
+  margin-top:4px !important;
+  font-size:18px !important;
 }
 
 /* 輸入 */
 .stock-box{
   width:min(560px,100%) !important;
-  margin-top:14px !important;
+  margin-top:12px !important;
 }
 
 .stock-box input,
 .stock-box button{
-  height:42px !important;
+  height:40px !important;
 }
 
 /* 筊杯 */
 .bua-stage{
-  height:220px !important;
-  margin-top:4px !important;
+  height:190px !important;
+  margin-top:0 !important;
 }
 
 .bua{
-  width:122px !important;
-  height:185px !important;
-  top:24px !important;
+  width:112px !important;
+  height:168px !important;
+  top:18px !important;
 }
 
 .bua-left{
-  left:250px !important;
+  left:260px !important;
 }
 
 .bua-right{
-  right:250px !important;
+  right:260px !important;
 }
 
 /* 按鈕 */
 .throw-btn{
-  width:220px !important;
-  height:58px !important;
-  font-size:24px !important;
+  width:210px !important;
+  height:54px !important;
+  font-size:23px !important;
   margin-top:0 !important;
 }
 
-/* 結果區：重點，不再切字 */
+/* 結果區 */
 .result-card{
   width:min(780px,100%) !important;
-  margin-top:14px !important;
+  margin-top:12px !important;
   min-height:auto !important;
   max-height:none !important;
-  padding:16px 22px 20px !important;
+  padding:13px 22px 16px !important;
   overflow:visible !important;
 }
 
 .result{
-  font-size:46px !important;
-  line-height:1.1 !important;
+  font-size:42px !important;
+  line-height:1.05 !important;
 }
 
 .meaning{
-  font-size:20px !important;
-  line-height:1.4 !important;
+  margin-top:6px !important;
+  font-size:18px !important;
+  line-height:1.35 !important;
 }
 
 .market-info{
-  margin-top:8px !important;
-  font-size:15px !important;
+  margin-top:6px !important;
+  font-size:14px !important;
+  line-height:1.35 !important;
   color:#ffe8b8 !important;
-  line-height:1.45 !important;
 }
 
 .poem{
-  margin-top:8px !important;
-  padding-top:8px !important;
-  font-size:15px !important;
-  line-height:1.55 !important;
+  margin-top:6px !important;
+  padding-top:6px !important;
+  font-size:14px !important;
+  line-height:1.4 !important;
   max-height:none !important;
   overflow:visible !important;
 }
@@ -779,22 +784,12 @@ h1{
   display:none !important;
 }
 
-.market-info .up-price{
-  color:#ff6b6b;
-  text-shadow:0 0 12px rgba(255,0,0,.65);
-}
-
-.market-info .down-price{
-  color:#5dff8a;
-  text-shadow:0 0 12px rgba(0,255,100,.65);
-}
-
-.market-info .flat-price{
-  color:#ffd96b;
-}
-
-/* 小螢幕 */
+/* 中螢幕 */
 @media(max-width:900px){
+  :root{
+    --ui-scale:.8;
+  }
+
   .bua-left{
     left:calc(50% - 170px) !important;
   }
@@ -804,15 +799,18 @@ h1{
   }
 }
 
+/* 手機 */
 @media(max-width:720px){
+  :root{
+    --ui-scale:.92;
+  }
 
   .app{
-    padding-top:58px !important;
-    padding-bottom:30px !important;
+    padding-top:54px !important;
   }
 
   h1{
-    font-size:36px !important;
+    font-size:34px !important;
   }
 
   .subtitle{
@@ -820,34 +818,38 @@ h1{
   }
 
   .bua-stage{
-    height:165px !important;
+    height:150px !important;
   }
 
   .bua{
-    width:84px !important;
-    height:130px !important;
+    width:78px !important;
+    height:122px !important;
+    top:20px !important;
   }
 
   .bua-left{
-    left:calc(50% - 110px) !important;
+    left:calc(50% - 105px) !important;
   }
 
   .bua-right{
-    right:calc(50% - 110px) !important;
+    right:calc(50% - 105px) !important;
+  }
+
+  .throw-btn{
+    height:46px !important;
+    font-size:20px !important;
   }
 
   .result-card{
-    padding:14px !important;
+    margin-top:8px !important;
+    padding:12px !important;
   }
 
   .result{
-    font-size:34px !important;
+    font-size:32px !important;
   }
 
-  .meaning{
-    font-size:15px !important;
-  }
-
+  .meaning,
   .market-info,
   .poem{
     font-size:13px !important;
