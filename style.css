@@ -622,48 +622,48 @@ h1{
   }
 }
 /* ====================== */
-/* 最終版：完全單頁、隱藏右邊拉 BAR */
+/* 最終修正版：不切字、無右側捲軸 */
 /* ====================== */
 
 html,
 body{
   width:100%;
-  height:100%;
+  min-height:100%;
   margin:0;
-  overflow:hidden !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
   scrollbar-width:none;
 }
 
 html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.app::-webkit-scrollbar{
+body::-webkit-scrollbar{
   display:none;
 }
 
 body{
   position:relative !important;
-  min-height:100dvh;
+  min-height:100vh;
 }
 
 .app{
   width:100%;
-  height:100dvh;
-  min-height:100dvh;
-  overflow:hidden !important;
-  padding:68px 18px 10px !important;
+  min-height:100vh;
+  padding:68px 18px 40px !important;
   display:flex !important;
   justify-content:center;
   align-items:flex-start;
+  overflow:visible !important;
 }
 
 .hero{
-  width:min(920px,100%);
-  height:calc(100dvh - 80px);
+  width:min(1050px,100%) !important;
+  height:auto !important;
+  min-height:auto !important;
+  overflow:visible !important;
   transform:none !important;
-  overflow:hidden;
 }
 
-/* 宮殿縮小 */
+/* 宮殿 */
 .temple-gate{
   height:82px !important;
 }
@@ -689,19 +689,20 @@ body{
   font-size:20px !important;
 }
 
-/* 主標題縮小 */
+/* 標題 */
 h1{
-  font-size:56px !important;
+  font-size:64px !important;
   line-height:1.05 !important;
 }
 
 .subtitle{
   margin-top:5px !important;
-  font-size:18px !important;
+  font-size:20px !important;
 }
 
-/* 輸入框 */
+/* 輸入 */
 .stock-box{
+  width:min(560px,100%) !important;
   margin-top:14px !important;
 }
 
@@ -710,87 +711,112 @@ h1{
   height:42px !important;
 }
 
-/* 筊杯區 */
+/* 筊杯 */
 .bua-stage{
-  height:205px !important;
+  height:220px !important;
   margin-top:4px !important;
 }
 
 .bua{
-  width:112px !important;
-  height:170px !important;
+  width:122px !important;
+  height:185px !important;
   top:24px !important;
 }
 
 .bua-left{
-  left:190px !important;
+  left:250px !important;
 }
 
 .bua-right{
-  right:190px !important;
+  right:250px !important;
 }
 
 /* 按鈕 */
 .throw-btn{
-  height:54px !important;
-  min-width:190px !important;
-  font-size:22px !important;
+  width:220px !important;
+  height:58px !important;
+  font-size:24px !important;
   margin-top:0 !important;
 }
 
-/* 結果區 */
+/* 結果區：重點，不再切字 */
 .result-card{
-  margin-top:12px !important;
-  min-height:118px !important;
-  max-height:135px !important;
-  padding:12px 18px !important;
-  overflow:hidden !important;
+  width:min(780px,100%) !important;
+  margin-top:14px !important;
+  min-height:auto !important;
+  max-height:none !important;
+  padding:16px 22px 20px !important;
+  overflow:visible !important;
 }
 
 .result{
-  font-size:40px !important;
-  line-height:1.05 !important;
+  font-size:46px !important;
+  line-height:1.1 !important;
 }
 
 .meaning{
-  font-size:18px !important;
-  line-height:1.35 !important;
+  font-size:20px !important;
+  line-height:1.4 !important;
+}
+
+.market-info{
+  margin-top:8px !important;
+  font-size:15px !important;
+  color:#ffe8b8 !important;
+  line-height:1.45 !important;
 }
 
 .poem{
-  margin-top:6px !important;
-  padding-top:6px !important;
-  font-size:14px !important;
-  line-height:1.45 !important;
-  max-height:44px !important;
-  overflow:hidden !important;
+  margin-top:8px !important;
+  padding-top:8px !important;
+  font-size:15px !important;
+  line-height:1.55 !important;
+  max-height:none !important;
+  overflow:visible !important;
 }
 
 .tip{
   display:none !important;
 }
 
-/* 手機版 */
+.market-info .up-price{
+  color:#ff6b6b;
+  text-shadow:0 0 12px rgba(255,0,0,.65);
+}
+
+.market-info .down-price{
+  color:#5dff8a;
+  text-shadow:0 0 12px rgba(0,255,100,.65);
+}
+
+.market-info .flat-price{
+  color:#ffd96b;
+}
+
+/* 小螢幕 */
+@media(max-width:900px){
+  .bua-left{
+    left:calc(50% - 170px) !important;
+  }
+
+  .bua-right{
+    right:calc(50% - 170px) !important;
+  }
+}
+
 @media(max-width:720px){
 
   .app{
     padding-top:58px !important;
-  }
-
-  .hero{
-    height:calc(100dvh - 65px);
+    padding-bottom:30px !important;
   }
 
   h1{
-    font-size:34px !important;
+    font-size:36px !important;
   }
 
   .subtitle{
     font-size:13px !important;
-  }
-
-  .stock-box{
-    margin-top:10px !important;
   }
 
   .bua-stage{
@@ -798,26 +824,20 @@ h1{
   }
 
   .bua{
-    width:82px !important;
-    height:128px !important;
+    width:84px !important;
+    height:130px !important;
   }
 
   .bua-left{
-    left:calc(50% - 105px) !important;
+    left:calc(50% - 110px) !important;
   }
 
   .bua-right{
-    right:calc(50% - 105px) !important;
-  }
-
-  .throw-btn{
-    height:48px !important;
-    font-size:20px !important;
+    right:calc(50% - 110px) !important;
   }
 
   .result-card{
-    margin-top:10px !important;
-    max-height:132px !important;
+    padding:14px !important;
   }
 
   .result{
@@ -828,160 +848,8 @@ h1{
     font-size:15px !important;
   }
 
+  .market-info,
   .poem{
     font-size:13px !important;
   }
-}
-/* ====================== */
-/* 紅框主內容放大版 */
-/* ====================== */
-
-.hero{
-  width:min(1050px,100%) !important;
-  height:calc(100dvh - 70px) !important;
-}
-
-h1{
-  font-size:68px !important;
-}
-
-.subtitle{
-  font-size:21px !important;
-}
-
-.stock-box{
-  width:min(560px,100%) !important;
-}
-
-.bua-stage{
-  height:235px !important;
-}
-
-.bua{
-  width:132px !important;
-  height:200px !important;
-}
-
-.bua-left{
-  left:260px !important;
-}
-
-.bua-right{
-  right:260px !important;
-}
-
-.throw-btn{
-  width:230px !important;
-  height:62px !important;
-  font-size:25px !important;
-}
-
-.result-card{
-  width:min(760px,100%) !important;
-  max-height:170px !important;
-  min-height:145px !important;
-}
-
-.result{
-  font-size:46px !important;
-}
-
-.meaning{
-  font-size:21px !important;
-}
-
-.poem{
-  font-size:15px !important;
-  max-height:52px !important;
-}
-
-/* 小螢幕避免爆版 */
-@media(max-width:900px){
-  .bua-left{
-    left:calc(50% - 180px) !important;
-  }
-
-  .bua-right{
-    right:calc(50% - 180px) !important;
-  }
-}
-
-@media(max-width:720px){
-  h1{
-    font-size:38px !important;
-  }
-
-  .subtitle{
-    font-size:14px !important;
-  }
-
-  .bua{
-    width:88px !important;
-    height:136px !important;
-  }
-
-  .bua-left{
-    left:calc(50% - 115px) !important;
-  }
-
-  .bua-right{
-    right:calc(50% - 115px) !important;
-  }
-
-  .result-card{
-    max-height:150px !important;
-  }
-}
-.market-info{
-  margin-top:8px;
-  font-size:15px;
-  color:#ffe8b8;
-  line-height:1.5;
-  opacity:.95;
-}
-
-.market-info .up-price{
-  color:#ff6b6b;
-  text-shadow:0 0 12px rgba(255,0,0,.65);
-}
-
-.market-info .down-price{
-  color:#5dff8a;
-  text-shadow:0 0 12px rgba(0,255,100,.65);
-}
-
-.market-info .flat-price{
-  color:#ffd96b;
-}
-/* 修正結果區文字被切 */
-.result-card{
-  min-height:185px !important;
-  max-height:none !important;
-  overflow:visible !important;
-}
-
-.poem{
-  max-height:none !important;
-  overflow:visible !important;
-}
-
-.market-info{
-  margin-top:8px;
-  font-size:15px;
-  color:#ffe8b8;
-  line-height:1.45;
-}
-
-.market-info .up-price{
-  color:#ff6b6b;
-  text-shadow:0 0 12px rgba(255,0,0,.65);
-}
-
-.market-info .down-price{
-  color:#5dff8a;
-  text-shadow:0 0 12px rgba(0,255,100,.65);
-}
-
-.market-info .flat-price{
-  color:#ffd96b;
 }
