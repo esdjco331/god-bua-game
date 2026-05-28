@@ -365,12 +365,7 @@ function throwBua() {
 
     throwBtn.disabled = false;
 
-    setTimeout(() => {
-      document.querySelector(".result-card").scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }, 150);
+    
 
   }, 1450);
 }
