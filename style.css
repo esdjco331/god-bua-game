@@ -832,3 +832,103 @@ h1{
     font-size:13px !important;
   }
 }
+/* ====================== */
+/* 紅框主內容放大版 */
+/* ====================== */
+
+.hero{
+  width:min(1050px,100%) !important;
+  height:calc(100dvh - 70px) !important;
+}
+
+h1{
+  font-size:68px !important;
+}
+
+.subtitle{
+  font-size:21px !important;
+}
+
+.stock-box{
+  width:min(560px,100%) !important;
+}
+
+.bua-stage{
+  height:235px !important;
+}
+
+.bua{
+  width:132px !important;
+  height:200px !important;
+}
+
+.bua-left{
+  left:260px !important;
+}
+
+.bua-right{
+  right:260px !important;
+}
+
+.throw-btn{
+  width:230px !important;
+  height:62px !important;
+  font-size:25px !important;
+}
+
+.result-card{
+  width:min(760px,100%) !important;
+  max-height:170px !important;
+  min-height:145px !important;
+}
+
+.result{
+  font-size:46px !important;
+}
+
+.meaning{
+  font-size:21px !important;
+}
+
+.poem{
+  font-size:15px !important;
+  max-height:52px !important;
+}
+
+/* 小螢幕避免爆版 */
+@media(max-width:900px){
+  .bua-left{
+    left:calc(50% - 180px) !important;
+  }
+
+  .bua-right{
+    right:calc(50% - 180px) !important;
+  }
+}
+
+@media(max-width:720px){
+  h1{
+    font-size:38px !important;
+  }
+
+  .subtitle{
+    font-size:14px !important;
+  }
+
+  .bua{
+    width:88px !important;
+    height:136px !important;
+  }
+
+  .bua-left{
+    left:calc(50% - 115px) !important;
+  }
+
+  .bua-right{
+    right:calc(50% - 115px) !important;
+  }
+
+  .result-card{
+    max-height:150px !important;
+  }
+}
