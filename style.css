@@ -610,3 +610,102 @@ h1{
     font-size:23px;
   }
 }
+/* 修正輸入框可點擊 */
+.stock-box,
+.stock-box input,
+.stock-box button,
+.throw-btn{
+  position:relative;
+  z-index:20;
+  pointer-events:auto;
+}
+
+/* 神明降駕動畫 */
+.god-light.descend{
+  animation:godLightDescend 1.4s ease-out, breath 3s ease-in-out infinite alternate;
+}
+
+.god-symbol.descend{
+  animation:godSymbolDescend 1.4s ease-out;
+}
+
+@keyframes godLightDescend{
+  0%{
+    top:-220px;
+    opacity:0;
+    transform:translateX(-50%) scale(.4);
+  }
+  60%{
+    top:70px;
+    opacity:1;
+    transform:translateX(-50%) scale(1.25);
+  }
+  100%{
+    top:92px;
+    opacity:.65;
+    transform:translateX(-50%) scale(1);
+  }
+}
+
+@keyframes godSymbolDescend{
+  0%{
+    transform:translateX(-50%) translateY(-220px) scale(.5);
+    opacity:0;
+  }
+  60%{
+    transform:translateX(-50%) translateY(-8px) scale(1.25);
+    opacity:.85;
+  }
+  100%{
+    transform:translateX(-50%) translateY(-24px) scale(1);
+    opacity:.25;
+  }
+}
+
+/* 擲筊動畫 */
+.throwing .bua-left{
+  animation:throwLeft 1.45s cubic-bezier(.2,.8,.2,1);
+}
+
+.throwing .bua-right{
+  animation:throwRight 1.45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes throwLeft{
+  0%{
+    transform:translateY(0) rotateZ(-24deg) rotateY(-20deg) rotateX(12deg);
+  }
+  35%{
+    transform:translateY(-220px) translateX(-40px) rotateZ(620deg) rotateY(560deg) rotateX(300deg);
+  }
+  100%{
+    transform:translateY(0) rotateZ(1080deg) rotateY(720deg) rotateX(360deg);
+  }
+}
+
+@keyframes throwRight{
+  0%{
+    transform:translateY(0) rotateZ(204deg) rotateY(20deg) rotateX(12deg);
+  }
+  35%{
+    transform:translateY(-220px) translateX(40px) rotateZ(-620deg) rotateY(-560deg) rotateX(-300deg);
+  }
+  100%{
+    transform:translateY(0) rotateZ(-1080deg) rotateY(-720deg) rotateX(-360deg);
+  }
+}
+
+/* 平面翻上來，偽 3D */
+.flat{
+  background:
+    radial-gradient(circle at 40% 35%,rgba(255,255,255,.9),transparent 28%),
+    linear-gradient(135deg,#fff7f2,#ffc6bd 62%,#8f1c14);
+}
+
+.flat.bua-left{
+  transform:rotateZ(-6deg) rotateX(72deg) rotateY(-12deg) scaleY(.72);
+}
+
+.flat.bua-right{
+  transform:rotateZ(186deg) rotateX(72deg) rotateY(12deg) scaleY(.72);
+}
