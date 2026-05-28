@@ -12,6 +12,7 @@ const throwBtn = document.getElementById("throwBtn");
 const resultEl = document.getElementById("result");
 const meaningEl = document.getElementById("meaning");
 const poemEl = document.getElementById("poem");
+const marketInfoEl = document.getElementById("marketInfo");
 
 const stockInput = document.getElementById("stockInput");
 const clearBtn = document.getElementById("clearBtn");
@@ -25,46 +26,6 @@ let particles = [];
 let audioCtx = null;
 
 /* ======================= */
-/* 股票中文名 */
-/* ======================= */
-
-const stockNames = {
-  "2330":"台積電",
-  "2317":"鴻海",
-  "2454":"聯發科",
-  "2308":"台達電",
-  "2412":"中華電",
-  "2881":"富邦金",
-  "2882":"國泰金",
-  "2891":"中信金",
-  "2886":"兆豐金",
-  "2603":"長榮",
-  "2609":"陽明",
-  "2615":"萬海",
-  "2618":"長榮航",
-  "2303":"聯電",
-  "2002":"中鋼",
-  "1301":"台塑",
-  "1303":"南亞",
-  "3008":"大立光",
-  "3034":"聯詠",
-  "3711":"日月光投控",
-  "3450":"聯鈞",
-  "4722":"國精化",
-  "4542":"科嶠",
-  "2382":"廣達",
-  "2357":"華碩",
-  "6669":"緯穎",
-  "3231":"緯創",
-  "2327":"國巨",
-  "2498":"宏達電",
-  "6446":"藥華藥",
-  "3661":"世芯-KY",
-  "3443":"創意",
-  "5274":"信驊"
-};
-
-/* ======================= */
 /* 籤詩 */
 /* ======================= */
 
@@ -75,14 +36,12 @@ const poems = {
     "財星高照，主力有意。可留意突破訊號。",
     "香煙直上，福星入局。明日若開高放量，宜順勢觀察。"
   ],
-
   mid: [
     "神明笑而不語，盤勢未明。先看量價，再定進退。",
     "風吹香煙半邊散，今日宜觀望，不宜重倉。",
     "等待方向，比猜方向更重要。盤勢未定，勿急躁。",
     "籤中有變，心中莫急。守株待兔，反得其時。"
   ],
-
   down: [
     "烏雲遮月，宜避鋒芒。若跌破支撐，先保本金。",
     "香灰落地，短線有壓。莫戀戰，留得青山在。",
@@ -141,7 +100,6 @@ function drawParticles() {
   });
 
   ctx.shadowBlur = 0;
-
   requestAnimationFrame(drawParticles);
 }
 
@@ -257,22 +215,43 @@ function godDescend() {
 }
 
 /* ======================= */
+/* 工具 */
+/* ======================= */
 
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const stockNameCache = {};
+function cleanNumber(v) {
+  if (v === undefined || v === null || v === "-" || v === "") {
+    return NaN;
+  }
 
-async function getStockDisplay() {
+  return parseFloat(String(v).replace(/,/g, ""));
+}
+
+function formatPrice(v) {
+  if (v === "-" || isNaN(v)) return "-";
+  return Number(v).toFixed(2).replace(/\.00$/, "");
+}
+
+function formatVolume(v) {
+  if (!v || isNaN(v)) return "-";
+
+  const lots = Math.round(v / 1000);
+
+  return lots.toLocaleString() + " 張";
+}
+
+/* ======================= */
+/* 即時行情查詢 */
+/* ======================= */
+
+async function getStockQuote() {
   const code = stockInput.value.trim();
 
   if (!code) {
-    return "此股";
-  }
-
-  if (stockNameCache[code]) {
-    return `${code} ${stockNameCache[code]}`;
+    return null;
   }
 
   const url =
@@ -282,19 +261,91 @@ async function getStockDisplay() {
     const res = await fetch(url);
     const data = await res.json();
 
-    if (data.msgArray && data.msgArray.length > 0) {
-      const item = data.msgArray.find(x => x.c === code);
-
-      if (item && item.n) {
-        stockNameCache[code] = item.n;
-        return `${code} ${item.n}`;
-      }
+    if (!data.msgArray || data.msgArray.length === 0) {
+      return null;
     }
+
+    const item = data.msgArray.find((x) => x.c === code);
+
+    if (!item) {
+      return null;
+    }
+
+    let price = cleanNumber(item.z);
+    const yesterday = cleanNumber(item.y);
+    const open = cleanNumber(item.o);
+    const high = cleanNumber(item.h);
+    const low = cleanNumber(item.l);
+    const volume = cleanNumber(item.v);
+
+    if (isNaN(price)) {
+      price = cleanNumber(item.a?.split("_")[0]) || cleanNumber(item.b?.split("_")[0]);
+    }
+
+    let change = 0;
+    let percent = 0;
+
+    if (!isNaN(price) && !isNaN(yesterday) && yesterday !== 0) {
+      change = price - yesterday;
+      percent = (change / yesterday) * 100;
+    }
+
+    return {
+      code: item.c,
+      name: item.n || "",
+      price,
+      yesterday,
+      open,
+      high,
+      low,
+      change,
+      percent,
+      volume,
+      time: item.t || ""
+    };
+
   } catch (e) {
-    console.log("查詢股名失敗", e);
+    console.log("行情查詢失敗", e);
+    return null;
+  }
+}
+
+function getStockDisplayFromQuote(q) {
+  const code = stockInput.value.trim();
+
+  if (!code) {
+    return "此股";
+  }
+
+  if (q && q.name) {
+    return `${q.code} ${q.name}`;
   }
 
   return code;
+}
+
+function renderMarketInfo(q) {
+  if (!marketInfoEl) return;
+
+  if (!q) {
+    marketInfoEl.innerHTML = "查無今日行情資料，可能是代號錯誤、休市或資料暫時無法取得。";
+    return;
+  }
+
+  const cls =
+    q.change > 0 ? "up-price" :
+    q.change < 0 ? "down-price" :
+    "flat-price";
+
+  const sign = q.change > 0 ? "+" : "";
+
+  marketInfoEl.innerHTML = `
+    <span>${q.code} ${q.name}</span>｜
+    現價 <span class="${cls}">${formatPrice(q.price)}</span>｜
+    漲跌 <span class="${cls}">${sign}${q.change.toFixed(2)}</span>｜
+    漲幅 <span class="${cls}">${sign}${q.percent.toFixed(2)}%</span>｜
+    成交量 ${formatVolume(q.volume)}
+  `;
 }
 
 /* ======================= */
@@ -315,6 +366,10 @@ function throwBua() {
   resultEl.innerHTML = "神明降駕中...";
   meaningEl.innerHTML = "香火升起，請稍候";
   poemEl.innerHTML = "";
+
+  if (marketInfoEl) {
+    marketInfoEl.innerHTML = "正在查詢今日行情...";
+  }
 
   godDescend();
   playThrowSound();
@@ -337,7 +392,11 @@ function throwBua() {
       rightBua.classList.add("flat");
     }
 
-    const stockDisplay = await getStockDisplay();
+    const quote = await getStockQuote();
+
+    renderMarketInfo(quote);
+
+    const stockDisplay = getStockDisplayFromQuote(quote);
 
     if (left !== right) {
       document.body.classList.add("blessed");
@@ -383,9 +442,6 @@ function throwBua() {
     }
 
     throwBtn.disabled = false;
-
-    
-
   }, 1450);
 }
 
@@ -398,6 +454,10 @@ throwBtn.addEventListener("click", throwBua);
 clearBtn.addEventListener("click", () => {
   stockInput.value = "";
   stockInput.focus();
+
+  if (marketInfoEl) {
+    marketInfoEl.innerHTML = "輸入股號後，擲筊會同步查詢今日行情";
+  }
 });
 
 stockInput.addEventListener("keydown", (e) => {
