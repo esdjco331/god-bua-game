@@ -262,20 +262,39 @@ function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function getStockDisplay() {
+const stockNameCache = {};
+
+async function getStockDisplay() {
   const code = stockInput.value.trim();
 
   if (!code) {
     return "此股";
   }
 
-  const name = stockNames[code];
-
-  if (name) {
-    return `${code} ${name}`;
+  if (stockNameCache[code]) {
+    return `${code} ${stockNameCache[code]}`;
   }
 
-  return `${code}`;
+  const url =
+    `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.msgArray && data.msgArray.length > 0) {
+      const item = data.msgArray.find(x => x.c === code);
+
+      if (item && item.n) {
+        stockNameCache[code] = item.n;
+        return `${code} ${item.n}`;
+      }
+    }
+  } catch (e) {
+    console.log("查詢股名失敗", e);
+  }
+
+  return code;
 }
 
 /* ======================= */
@@ -304,7 +323,7 @@ function throwBua() {
 
   stage.classList.add("throwing");
 
-  setTimeout(() => {
+  setTimeout(async () => {
     stage.classList.remove("throwing");
 
     const left = Math.random() > 0.5 ? 1 : 0;
@@ -318,7 +337,7 @@ function throwBua() {
       rightBua.classList.add("flat");
     }
 
-    const stockDisplay = getStockDisplay();
+    const stockDisplay = await getStockDisplay();
 
     if (left !== right) {
       document.body.classList.add("blessed");
