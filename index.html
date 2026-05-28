@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>神明擲筊問股市</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    min-height:100vh;
+
+    padding-top:40px;
+    padding-bottom:40px;
+
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:"Microsoft JhengHei",sans-serif;
+
+    background:
+    radial-gradient(circle at top,
+    #551111 0%,
+    #180707 45%,
+    #020202 100%);
+
+    color:white;
+
+    transition:1s;
+
+    position:relative;
+}
+
+/* ============================== */
+/* 背景動態光 */
+/* ============================== */
+
+.bg-light{
+
+    position:absolute;
+
+    width:1000px;
+    height:1000px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(255,160,0,0.22),
+        transparent 70%
+    );
+
+    filter:blur(70px);
+
+    animation:lightMove 10s infinite alternate ease-in-out;
+}
+
+@keyframes lightMove{
+
+    from{
+
+        transform:
+        translate(-120px,-80px)
+        scale(1);
+    }
+
+    to{
+
+        transform:
+        translate(140px,60px)
+        scale(1.15);
+    }
+}
+
+/* ============================== */
+
+.container{
+
+    position:relative;
+
+    z-index:5;
+
+    text-align:center;
+
+    padding-bottom:80px;
+}
+
+/* ============================== */
+
+.title{
+
+    font-size:64px;
+
+    letter-spacing:10px;
+
+    margin-bottom:10px;
+
+    text-shadow:
+    0 0 15px rgba(255,255,255,0.2),
+    0 0 40px rgba(255,120,0,0.3);
+}
+
+.desc{
+
+    color:#ffcf8a;
+
+    margin-bottom:25px;
+
+    font-size:22px;
+
+    letter-spacing:3px;
+}
+
+/* ============================== */
+/* 擲筊區 */
+/* ============================== */
+
+.board{
+
+    position:relative;
+
+    width:700px;
+
+    height:260px;
+
+    margin:auto;
+}
+
+/* ============================== */
+/* 筊杯 */
+/* ============================== */
+
+.bua{
+
+    position:absolute;
+
+    width:160px;
+    height:230px;
+
+    border-radius:
+    100% 10% 100% 10%;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff5d5d 0%,
+        #d00000 40%,
+        #760000 75%,
+        #2a0000 100%
+    );
+
+    box-shadow:
+
+    inset 14px 14px 18px rgba(255,255,255,0.15),
+
+    inset -20px -20px 25px rgba(0,0,0,0.55),
+
+    0 20px 30px rgba(0,0,0,0.6),
+
+    0 0 30px rgba(255,0,0,0.25);
+
+    transition:0.7s;
+}
+
+/* 表面亮光 */
+
+.bua::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:45px;
+    height:140px;
+
+    background:
+    linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.7),
+        transparent
+    );
+
+    border-radius:50%;
+
+    top:18px;
+    left:18px;
+
+    transform:rotate(-18deg);
+
+    filter:blur(3px);
+
+    opacity:0.7;
+}
+
+/* 側邊陰影 */
+
+.bua::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:12px;
+    top:10px;
+
+    width:30px;
+    height:190px;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35),
+        transparent
+    );
+
+    filter:blur(4px);
+}
+
+/* 左邊 */
+
+.left{
+
+    left:120px;
+
+    top:20px;
+
+    transform:
+    rotate(-35deg);
+}
+
+/* 右邊 */
+
+.right{
+
+    right:120px;
+
+    top:20px;
+
+    transform:
+    rotate(145deg);
+}
+
+/* ============================== */
+/* 平面朝上 */
+/* ============================== */
+
+.flat.left{
+
+    transform:
+    rotate(0deg)
+    scaleY(0.92);
+
+    background:
+    linear-gradient(
+        145deg,
+        #fff0f0,
+        #ffdede
+    );
+
+    box-shadow:
+
+    inset 0 0 20px rgba(0,0,0,0.18),
+
+    0 12px 25px rgba(0,0,0,0.45);
+}
+
+.flat.right{
+
+    transform:
+    rotate(180deg)
+    scaleY(0.92);
+
+    background:
+    linear-gradient(
+        145deg,
+        #fff0f0,
+        #ffdede
+    );
+
+    box-shadow:
+
+    inset 0 0 20px rgba(0,0,0,0.18),
+
+    0 12px 25px rgba(0,0,0,0.45);
+}
+
+/* ============================== */
+/* 擲筊動畫 */
+/* ============================== */
+
+.throwing .left{
+
+    animation:spinLeft 1.3s ease;
+}
+
+.throwing .right{
+
+    animation:spinRight 1.3s ease;
+}
+
+@keyframes spinLeft{
+
+    0%{
+
+        transform:
+        translateY(0)
+        rotate(-35deg);
+    }
+
+    30%{
+
+        transform:
+        translateY(-220px)
+        rotate(540deg);
+    }
+
+    100%{
+
+        transform:
+        translateY(0)
+        rotate(1080deg);
+    }
+}
+
+@keyframes spinRight{
+
+    0%{
+
+        transform:
+        translateY(0)
+        rotate(145deg);
+    }
+
+    30%{
+
+        transform:
+        translateY(-220px)
+        rotate(-540deg);
+    }
+
+    100%{
+
+        transform:
+        translateY(0)
+        rotate(-1080deg);
+    }
+}
+
+/* ============================== */
+/* 按鈕 */
+/* ============================== */
+
+button{
+
+    margin-top:10px;
+
+    padding:18px 55px;
+
+    border:none;
+
+    border-radius:22px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffd24a,
+        #ff8a00
+    );
+
+    box-shadow:
+
+    0 10px 25px rgba(255,150,0,0.35),
+
+    inset 0 2px 10px rgba(255,255,255,0.4);
+
+    transition:0.3s;
+}
+
+button:hover{
+
+    transform:
+    scale(1.06);
+
+    box-shadow:
+
+    0 0 35px rgba(255,170,0,0.7);
+}
+
+/* ============================== */
+/* 結果 */
+/* ============================== */
+
+.result{
+
+    margin-top:25px;
+
+    min-height:70px;
+
+    font-size:58px;
+
+    font-weight:bold;
+
+    transition:0.5s;
+}
+
+.sub{
+
+    margin-top:10px;
+
+    font-size:30px;
+}
+
+/* ============================== */
+/* 聖杯 */
+/* ============================== */
+
+.glow{
+
+    background:
+    radial-gradient(circle at center,
+    rgba(255,240,120,0.35),
+    #100707 70%);
+}
+
+.up{
+
+    color:#8eff96;
+
+    text-shadow:
+
+    0 0 20px #00ff66,
+
+    0 0 40px #00ff66,
+
+    0 0 80px #00ff66;
+}
+
+/* ============================== */
+/* 笑杯 */
+/* ============================== */
+
+.middle{
+
+    color:#ffd96b;
+
+    text-shadow:
+    0 0 25px rgba(255,220,0,0.75);
+}
+
+/* ============================== */
+/* 哭杯 */
+/* ============================== */
+
+.sad{
+
+    background:
+    radial-gradient(circle at center,
+    rgba(80,80,80,0.12),
+    #000 80%);
+
+    filter:grayscale(35%);
+}
+
+.down{
+
+    color:#ff6d6d;
+
+    text-shadow:
+
+    0 0 20px #ff0000,
+
+    0 0 45px #ff0000;
+}
+
+/* ============================== */
+
+.flash{
+
+    animation:flash 1s infinite alternate;
+}
+
+@keyframes flash{
+
+    from{
+
+        transform:scale(1);
+    }
+
+    to{
+
+        transform:scale(1.06);
+    }
+}
+
+/* ============================== */
+
+.tip{
+
+    margin-top:20px;
+
+    font-size:18px;
+
+    color:#cccccc;
+}
+
+/* ============================== */
+/* 手機版 */
+/* ============================== */
+
+@media(max-width:768px){
+
+    .title{
+        font-size:44px;
+    }
+
+    .board{
+
+        width:100%;
+        height:220px;
+    }
+
+    .bua{
+
+        width:110px;
+        height:170px;
+    }
+
+    .left{
+
+        left:60px;
+    }
+
+    .right{
+
+        right:60px;
+    }
+
+    .result{
+
+        font-size:46px;
+    }
+
+    .sub{
+
+        font-size:24px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg-light"></div>
+
+<div class="container">
+
+    <div class="title">
+        神明擲筊
+    </div>
+
+    <div class="desc">
+        問股市 · 問運勢 · 問人生
+    </div>
+
+    <div class="board" id="board">
+
+        <div class="bua left" id="leftBua"></div>
+
+        <div class="bua right" id="rightBua"></div>
+
+    </div>
+
+    <button onclick="throwBua()">
+        開始擲筊
+    </button>
+
+    <div class="result" id="result"></div>
+
+    <div class="sub" id="sub"></div>
+
+    <div class="tip">
+        聖杯＝會漲　笑杯＝觀望　哭杯＝會跌
+    </div>
+
+</div>
+
+<script>
+
+const resultText =
+document.getElementById("result");
+
+const subText =
+document.getElementById("sub");
+
+const leftBua =
+document.getElementById("leftBua");
+
+const rightBua =
+document.getElementById("rightBua");
+
+const board =
+document.getElementById("board");
+
+const body =
+document.body;
+
+/* ============================== */
+
+function throwBua(){
+
+    resultText.innerHTML = "";
+
+    subText.innerHTML = "";
+
+    body.className = "";
+
+    leftBua.classList.remove("flat");
+
+    rightBua.classList.remove("flat");
+
+    board.classList.add("throwing");
+
+    setTimeout(()=>{
+
+        board.classList.remove("throwing");
+
+        /*
+        0 = 凸面
+        1 = 平面
+        */
+
+        let left =
+        Math.random() > 0.5 ? 1 : 0;
+
+        let right =
+        Math.random() > 0.5 ? 1 : 0;
+
+        /* 平面 */
+
+        if(left === 1){
+
+            leftBua.classList.add("flat");
+        }
+
+        if(right === 1){
+
+            rightBua.classList.add("flat");
+        }
+
+        /* ============================== */
+        /* 聖杯 */
+        /* ============================== */
+
+        if(left !== right){
+
+            body.classList.add("glow");
+
+            resultText.className =
+            "result up flash";
+
+            resultText.innerHTML =
+            "聖杯";
+
+            subText.innerHTML =
+            "神明表示：會漲 📈✨";
+        }
+
+        /* ============================== */
+        /* 笑杯 */
+        /* ============================== */
+
+        else if(left === 0 && right === 0){
+
+            resultText.className =
+            "result middle";
+
+            resultText.innerHTML =
+            "笑杯";
+
+            subText.innerHTML =
+            "神明笑而不答 😆";
+        }
+
+        /* ============================== */
+        /* 哭杯 */
+        /* ============================== */
+
+        else{
+
+            body.classList.add("sad");
+
+            resultText.className =
+            "result down";
+
+            resultText.innerHTML =
+            "哭杯";
+
+            subText.innerHTML =
+            "神明表示：會跌 📉💀";
+        }
+
+    },1300);
+}
+
+</script>
+
+</body>
+</html>
