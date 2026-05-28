@@ -932,3 +932,24 @@ h1{
     max-height:150px !important;
   }
 }
+.market-info{
+  margin-top:8px;
+  font-size:15px;
+  color:#ffe8b8;
+  line-height:1.5;
+  opacity:.95;
+}
+
+.market-info .up-price{
+  color:#ff6b6b;
+  text-shadow:0 0 12px rgba(255,0,0,.65);
+}
+
+.market-info .down-price{
+  color:#5dff8a;
+  text-shadow:0 0 12px rgba(0,255,100,.65);
+}
+
+.market-info .flat-price{
+  color:#ffd96b;
+}
