@@ -817,3 +817,49 @@ h1{
     line-height:1.45;
   }
 }
+/* ====================== */
+/* 強制取消所有捲軸 */
+/* 一定放在 style.css 最下面 */
+/* ====================== */
+
+html,
+body{
+  width:100vw !important;
+  height:100vh !important;
+  max-width:100vw !important;
+  max-height:100vh !important;
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+body{
+  position:fixed !important;
+  inset:0 !important;
+}
+
+.app{
+  width:100vw !important;
+  height:100vh !important;
+  min-height:100vh !important;
+  overflow:hidden !important;
+  padding:78px 18px 12px !important;
+}
+
+.hero{
+  transform:scale(.82) !important;
+  transform-origin:top center !important;
+}
+
+.result-card{
+  max-height:160px !important;
+  overflow:hidden !important;
+}
+
+.poem{
+  max-height:58px !important;
+  overflow:hidden !important;
+}
+
+.tip{
+  display:none !important;
+}
