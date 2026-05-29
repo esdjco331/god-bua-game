@@ -724,7 +724,7 @@ body.doom{
 @media(max-width:720px){
 
   .hero{
-    transform:scale(.84) !important;
+    transform:scale(.80) !important;
     transform-origin:top center !important;
   }
 
