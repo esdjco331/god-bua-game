@@ -197,13 +197,7 @@ function formatPrice(v) {
 function normalizeVolume(v, source) {
   if (!v || isNaN(v)) return NaN;
 
-  /*
-    TWSE OpenAPI 通常是「股」
-    MIS / 部分 TPEx 可能已經是「張」
-    大於 100000 通常視為股數，轉張
-  */
-
-  if (source === "TWSE") {
+  if (source === "TWSE" || source === "TWSE_PROXY") {
     return Math.round(v / 1000);
   }
 
@@ -256,6 +250,40 @@ async function fetchJson(url, timeoutMs = 3000) {
   }
 
   throw new Error("所有來源都失敗");
+}
+
+async function getStockQuoteFromProxy(code) {
+  try {
+    const url = `https://god-bua-game.vercel.app/api/quote?code=${code}`;
+
+    const res = await fetch(url, {
+      cache: "no-store"
+    });
+
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
+    }
+
+    const data = await res.json();
+
+    if (!data || data.error) {
+      return null;
+    }
+
+    return {
+      code: data.code || code,
+      name: data.name || "",
+      price: cleanNumber(data.price),
+      change: cleanNumber(data.change),
+      percent: cleanNumber(data.percent),
+      volume: cleanNumber(data.volume),
+      source: data.source || "TWSE_PROXY"
+    };
+
+  } catch (e) {
+    console.log("Proxy查詢失敗", e);
+    return null;
+  }
 }
 
 async function getStockQuoteFromTwse(code) {
@@ -440,6 +468,7 @@ async function getStockQuote() {
   }
 
   const tasks = [
+    getStockQuoteFromProxy(code),
     getStockQuoteFromTwse(code),
     getStockQuoteFromTpex(code),
     getStockQuoteFromMis(code)
