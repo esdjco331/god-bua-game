@@ -171,13 +171,22 @@ function playBell(good = false) {
 }
 
 function godDescend() {
-  godLight.classList.remove("descend");
-  godSymbol.classList.remove("descend");
+  if (godLight) {
+    godLight.classList.remove("descend");
+  }
 
-  void godLight.offsetWidth;
+  if (godSymbol) {
+    godSymbol.classList.remove("descend");
+  }
 
-  godLight.classList.add("descend");
-  godSymbol.classList.add("descend");
+  if (godLight) {
+    void godLight.offsetWidth;
+    godLight.classList.add("descend");
+  }
+
+  if (godSymbol) {
+    godSymbol.classList.add("descend");
+  }
 }
 
 function pick(arr) {
@@ -217,54 +226,38 @@ function formatVolume(v, source) {
 }
 
 async function fetchJson(url, timeoutMs = 3000) {
-  const proxyList = [
-    url,
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
-  ];
+  const controller = new AbortController();
 
-  for (const finalUrl of proxyList) {
-    const controller = new AbortController();
+  const timer = setTimeout(() => {
+    controller.abort();
+  }, timeoutMs);
 
-    const timer = setTimeout(() => {
-      controller.abort();
-    }, timeoutMs);
+  try {
+    const res = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal
+    });
 
-    try {
-      const res = await fetch(finalUrl, {
-        cache: "no-store",
-        signal: controller.signal
-      });
+    clearTimeout(timer);
 
-      clearTimeout(timer);
-
-      if (!res.ok) {
-        throw new Error("HTTP " + res.status);
-      }
-
-      return await res.json();
-
-    } catch (e) {
-      clearTimeout(timer);
-      console.log("fetch 失敗，換下一個來源", finalUrl, e);
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
     }
-  }
 
-  throw new Error("所有來源都失敗");
+    return await res.json();
+
+  } catch (e) {
+    clearTimeout(timer);
+    console.log("fetch 失敗", url, e);
+    throw e;
+  }
 }
 
 async function getStockQuoteFromProxy(code) {
   try {
     const url = `https://god-bua-game.vercel.app/api/quote?code=${code}`;
 
-    const res = await fetch(url, {
-      cache: "no-store"
-    });
-
-    if (!res.ok) {
-      throw new Error("HTTP " + res.status);
-    }
-
-    const data = await res.json();
+    const data = await fetchJson(url, 5000);
 
     if (!data || data.error) {
       return null;
@@ -277,7 +270,7 @@ async function getStockQuoteFromProxy(code) {
       change: cleanNumber(data.change),
       percent: cleanNumber(data.percent),
       volume: cleanNumber(data.volume),
-      source: data.source || "TWSE_PROXY"
+      source: data.source || "MIS"
     };
 
   } catch (e) {
@@ -287,49 +280,55 @@ async function getStockQuoteFromProxy(code) {
 }
 
 async function getStockQuoteFromTwse(code) {
-  const url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL";
-  const data = await fetchJson(url, 3000);
+  try {
+    const url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL";
+    const data = await fetchJson(url, 3000);
 
-  const item = data.find((x) => {
-    return x.Code === code || x["證券代號"] === code || x.code === code;
-  });
+    const item = data.find((x) => {
+      return x.Code === code || x["證券代號"] === code || x.code === code;
+    });
 
-  if (!item) return null;
+    if (!item) return null;
 
-  const name = item.Name || item["證券名稱"] || item.name || "";
+    const name = item.Name || item["證券名稱"] || item.name || "";
 
-  const price =
-    cleanNumber(item.ClosingPrice) ||
-    cleanNumber(item.Close) ||
-    cleanNumber(item["收盤價"]);
+    const price =
+      cleanNumber(item.ClosingPrice) ||
+      cleanNumber(item.Close) ||
+      cleanNumber(item["收盤價"]);
 
-  const change =
-    cleanNumber(item.Change) ||
-    cleanNumber(item.ChangePrice) ||
-    cleanNumber(item["漲跌價差"]) ||
-    0;
+    const change =
+      cleanNumber(item.Change) ||
+      cleanNumber(item.ChangePrice) ||
+      cleanNumber(item["漲跌價差"]) ||
+      0;
 
-  const volume =
-    cleanNumber(item.TradeVolume) ||
-    cleanNumber(item.TradingShares) ||
-    cleanNumber(item["成交股數"]) ||
-    0;
+    const volume =
+      cleanNumber(item.TradeVolume) ||
+      cleanNumber(item.TradingShares) ||
+      cleanNumber(item["成交股數"]) ||
+      0;
 
-  let percent = 0;
+    let percent = 0;
 
-  if (!isNaN(price) && !isNaN(change) && price - change !== 0) {
-    percent = (change / (price - change)) * 100;
+    if (!isNaN(price) && !isNaN(change) && price - change !== 0) {
+      percent = (change / (price - change)) * 100;
+    }
+
+    return {
+      code,
+      name,
+      price,
+      change,
+      percent,
+      volume,
+      source: "TWSE"
+    };
+
+  } catch (e) {
+    console.log("TWSE查詢失敗", e);
+    return null;
   }
-
-  return {
-    code,
-    name,
-    price,
-    change,
-    percent,
-    volume,
-    source: "TWSE"
-  };
 }
 
 async function getStockQuoteFromTpex(code) {
@@ -407,53 +406,6 @@ async function getStockQuoteFromTpex(code) {
   return null;
 }
 
-async function getStockQuoteFromMis(code) {
-  const url =
-    `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
-
-  try {
-    const data = await fetchJson(url, 3000);
-
-    if (!data.msgArray || data.msgArray.length === 0) return null;
-
-    const item = data.msgArray.find((x) => x.c === code);
-
-    if (!item) return null;
-
-    let price = cleanNumber(item.z);
-    const yesterday = cleanNumber(item.y);
-    const volume = cleanNumber(item.v);
-
-    if (isNaN(price)) {
-      price =
-        cleanNumber(item.a?.split("_")[0]) ||
-        cleanNumber(item.b?.split("_")[0]);
-    }
-
-    let change = 0;
-    let percent = 0;
-
-    if (!isNaN(price) && !isNaN(yesterday) && yesterday !== 0) {
-      change = price - yesterday;
-      percent = (change / yesterday) * 100;
-    }
-
-    return {
-      code: item.c,
-      name: item.n || "",
-      price,
-      change,
-      percent,
-      volume,
-      source: "MIS"
-    };
-
-  } catch (e) {
-    console.log("MIS 查詢失敗", e);
-    return null;
-  }
-}
-
 async function getStockQuote() {
   const code = stockInput.value.trim();
 
@@ -470,12 +422,11 @@ async function getStockQuote() {
   const tasks = [
     getStockQuoteFromProxy(code),
     getStockQuoteFromTwse(code),
-    getStockQuoteFromTpex(code),
-    getStockQuoteFromMis(code)
+    getStockQuoteFromTpex(code)
   ];
 
   const timeout = new Promise((resolve) => {
-    setTimeout(() => resolve(null), 4500);
+    setTimeout(() => resolve(null), 5500);
   });
 
   const firstSuccess = Promise.any(
@@ -520,18 +471,22 @@ function renderMarketInfo(q) {
     return;
   }
 
+  const price = isNaN(q.price) ? 0 : q.price;
+  const change = isNaN(q.change) ? 0 : q.change;
+  const percent = isNaN(q.percent) ? 0 : q.percent;
+
   const cls =
-    q.change > 0 ? "up-price" :
-    q.change < 0 ? "down-price" :
+    change > 0 ? "up-price" :
+    change < 0 ? "down-price" :
     "flat-price";
 
-  const sign = q.change > 0 ? "+" : "";
+  const sign = change > 0 ? "+" : "";
 
   marketInfoEl.innerHTML = `
     <span>${q.code} ${q.name || ""}</span>｜
-    現價 <span class="${cls}">${formatPrice(q.price)}</span>｜
-    漲跌 <span class="${cls}">${sign}${q.change.toFixed(2)}</span>｜
-    漲幅 <span class="${cls}">${sign}${q.percent.toFixed(2)}%</span>｜
+    現價 <span class="${cls}">${formatPrice(price)}</span>｜
+    漲跌 <span class="${cls}">${sign}${change.toFixed(2)}</span>｜
+    漲幅 <span class="${cls}">${sign}${percent.toFixed(2)}%</span>｜
     成交量 ${formatVolume(q.volume, q.source)}
   `;
 }
@@ -543,7 +498,11 @@ function throwBua() {
     resultEl.className = "result mid";
     resultEl.innerHTML = "請先輸入股號";
     meaningEl.innerHTML = "例如：2330、2317、2454";
-    marketInfoEl.innerHTML = "尚未輸入股票代號，無法查詢行情。";
+
+    if (marketInfoEl) {
+      marketInfoEl.innerHTML = "尚未輸入股票代號，無法查詢行情。";
+    }
+
     poemEl.innerHTML = "";
     stockInput.focus();
     return;
@@ -555,7 +514,6 @@ function throwBua() {
 
   leftBua.classList.remove("flat");
   rightBua.classList.remove("flat");
-
   stage.classList.remove("throwing");
 
   resultEl.className = "result";
