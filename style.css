@@ -375,7 +375,8 @@ body.doom{
   border-radius:24px;
   cursor:pointer;
   font-size:40px !important;
-  font-weight:1000;
+  font-weight:700;
+  line-height:58px !important;
   color:#fff8dc;
   background:linear-gradient(135deg,#ffdf67,#ff8b00,#c94700);
   box-shadow:
