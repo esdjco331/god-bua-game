@@ -65,7 +65,7 @@ body.doom{
   left:50%;
   width:100%;
   transform:translateX(-50%);
-  z-index:2;
+  z-index:-1;
   pointer-events:none;
 }
 
