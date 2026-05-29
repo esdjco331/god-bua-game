@@ -806,3 +806,65 @@ body{
 .tip{
   margin-top:4px !important;
 }
+/* ===== 812 版面微調：加寬、結果框加大、筊杯上移 ===== */
+
+.hero{
+  width:min(1450px,98vw) !important;
+}
+
+.roof-banner img{
+  max-height:155px !important;
+}
+
+.main-signboard img{
+  width:min(600px,60vw) !important;
+}
+
+.temple-banner{
+  gap:42px !important;
+}
+
+.banner-left,
+.banner-right{
+  width:138px !important;
+}
+
+.banner-center{
+  width:min(540px,46vw) !important;
+}
+
+/* 筊杯區往上 */
+.bua-stage{
+  margin-top:-18px !important;
+  height:150px !important;
+}
+
+/* 開始擲筊按鈕不要貼結果框 */
+.throw-btn{
+  margin-top:-10px !important;
+  margin-bottom:22px !important;
+}
+
+/* 結果說明框加大 */
+.result-card{
+  width:min(880px,94vw) !important;
+  min-height:225px !important;
+  padding:22px 34px 26px !important;
+  margin-top:0 !important;
+}
+
+.result{
+  font-size:50px !important;
+}
+
+.meaning{
+  font-size:24px !important;
+}
+
+.market-info{
+  font-size:17px !important;
+}
+
+.poem{
+  font-size:18px !important;
+}
