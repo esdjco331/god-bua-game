@@ -592,3 +592,55 @@ body.doom{
     display:none;
   }
 }
+/* ===== 815 微調：筊杯放大、結果框放大並上移 ===== */
+
+/* 筊杯整區往上、放大 */
+.bua-stage{
+  height:150px !important;
+  margin:-24px auto -4px !important;
+}
+
+.bua{
+  width:108px !important;
+  height:160px !important;
+  top:-8px !important;
+}
+
+.bua-left{
+  left:calc(50% - 150px) !important;
+}
+
+.bua-right{
+  right:calc(50% - 150px) !important;
+}
+
+/* 按鈕跟結果一起往上靠 */
+.throw-btn{
+  margin-top:-4px !important;
+  margin-bottom:10px !important;
+}
+
+/* 結果卡片放大、往上 */
+.result-card{
+  width:min(980px,94vw) !important;
+  min-height:235px !important;
+  padding:24px 42px 26px !important;
+  margin:-8px auto 4px !important;
+}
+
+/* 結果文字放大 */
+.result{
+  font-size:58px !important;
+}
+
+.meaning{
+  font-size:27px !important;
+}
+
+.market-info{
+  font-size:19px !important;
+}
+
+.poem{
+  font-size:21px !important;
+}
