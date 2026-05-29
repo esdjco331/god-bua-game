@@ -244,7 +244,10 @@ function formatVolume(v) {
 /* ======================= */
 
 async function fetchJson(url) {
-  const res = await fetch(url, {
+  const proxyUrl =
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+
+  const res = await fetch(proxyUrl, {
     cache: "no-store"
   });
 
