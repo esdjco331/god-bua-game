@@ -71,7 +71,7 @@ body.doom{
 
 .roof-banner img{
   width:100%;
-  max-height:132px;
+  max-height:126px;
   object-fit:contain;
   object-position:top center;
   display:block;
@@ -90,7 +90,7 @@ body.doom{
   display:flex;
   justify-content:center;
   align-items:flex-start;
-  padding:68px 18px 0 !important;
+  padding:64px 18px 0 !important;
   overflow:hidden !important;
 }
 
@@ -99,7 +99,7 @@ body.doom{
   text-align:center;
   position:relative;
   overflow:visible !important;
-  transform:scale(.66) !important;
+  transform:scale(.65) !important;
   transform-origin:top center !important;
 }
 
@@ -170,13 +170,13 @@ body.doom{
   width:100%;
   display:flex;
   justify-content:center;
-  margin:-24px 0 -34px !important;
+  margin:-22px 0 -34px !important;
   position:relative;
   z-index:30;
 }
 
 .main-signboard img{
-  width:min(560px,55vw) !important;
+  width:min(540px,54vw) !important;
   height:auto;
   filter:
     drop-shadow(0 0 18px rgba(255,210,80,.55))
@@ -190,15 +190,15 @@ body.doom{
   display:flex;
   justify-content:center;
   align-items:flex-start;
-  gap:36px !important;
-  margin:-8px auto -48px !important;
+  gap:34px !important;
+  margin:-10px auto -56px !important;
   position:relative;
   z-index:35;
 }
 
 .banner-left,
 .banner-right{
-  width:126px !important;
+  width:120px !important;
   height:auto;
   flex-shrink:0;
   filter:
@@ -207,11 +207,11 @@ body.doom{
 }
 
 .banner-center{
-  width:min(500px,42vw) !important;
+  width:min(480px,40vw) !important;
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding-top:22px !important;
+  padding-top:20px !important;
 }
 
 .banner-title{
@@ -227,7 +227,7 @@ body.doom{
 .stock-box{
   position:relative;
   z-index:30;
-  margin:11px auto 0 !important;
+  margin:10px auto 0 !important;
   width:100% !important;
   display:flex;
   gap:10px;
@@ -275,16 +275,16 @@ body.doom{
 .bua-stage{
   position:relative;
   width:min(760px,100%);
-  height:126px !important;
-  margin:-12px auto 0 !important;
+  height:190px !important;
+  margin:-88px auto -8px !important;
   perspective:900px;
 }
 
 .bua{
   position:absolute;
-  top:0 !important;
-  width:88px !important;
-  height:132px !important;
+  top:-36px !important;
+  width:112px !important;
+  height:166px !important;
   border-radius:56% 44% 58% 42% / 62% 38% 62% 38%;
   transform-style:preserve-3d;
   background:
@@ -309,12 +309,12 @@ body.doom{
 }
 
 .bua-left{
-  left:calc(50% - 138px);
+  left:calc(50% - 152px) !important;
   transform:rotateZ(-24deg) rotateY(-20deg) rotateX(12deg);
 }
 
 .bua-right{
-  right:calc(50% - 138px);
+  right:calc(50% - 152px) !important;
   transform:rotateZ(204deg) rotateY(20deg) rotateX(12deg);
 }
 
@@ -381,8 +381,8 @@ body.doom{
   box-shadow:
     0 16px 38px rgba(255,136,0,.38),
     inset 0 2px 14px rgba(255,255,255,.45);
-  margin-top:-8px !important;
-  margin-bottom:18px !important;
+  margin-top:-42px !important;
+  margin-bottom:28px !important;
 }
 
 .throw-btn:active{
@@ -392,10 +392,10 @@ body.doom{
 /* 結果 */
 
 .result-card{
-  width:min(920px,94vw) !important;
-  min-height:215px !important;
-  margin:-2px auto 4px !important;
-  padding:22px 36px 24px !important;
+  width:min(980px,94vw) !important;
+  min-height:235px !important;
+  margin:-4px auto 4px !important;
+  padding:24px 42px 26px !important;
   border:1px solid rgba(255,215,122,.28);
   border-radius:28px;
   background:
@@ -408,7 +408,7 @@ body.doom{
 }
 
 .result{
-  font-size:52px !important;
+  font-size:58px !important;
   font-weight:900;
   letter-spacing:.12em;
   line-height:1.08 !important;
@@ -416,14 +416,14 @@ body.doom{
 
 .meaning{
   margin-top:10px !important;
-  font-size:25px !important;
+  font-size:27px !important;
   color:#ffe0a5;
   line-height:1.45;
 }
 
 .market-info{
   margin-top:8px !important;
-  font-size:18px !important;
+  font-size:19px !important;
   color:#ffe8b8;
   line-height:1.55;
   opacity:.95;
@@ -447,7 +447,7 @@ body.doom{
   margin:14px auto 0 !important;
   max-width:760px;
   line-height:1.75;
-  font-size:19px !important;
+  font-size:21px !important;
   color:#fff5d7;
   border-top:1px solid rgba(255,215,122,.22);
   padding-top:12px !important;
@@ -547,6 +547,7 @@ body.doom{
 
   .bua-stage{
     height:170px !important;
+    margin:0 auto !important;
   }
 
   .bua{
@@ -556,17 +557,19 @@ body.doom{
   }
 
   .bua-left{
-    left:calc(50% - 112px);
+    left:calc(50% - 112px) !important;
   }
 
   .bua-right{
-    right:calc(50% - 112px);
+    right:calc(50% - 112px) !important;
   }
 
   .throw-btn{
     height:52px !important;
     min-width:190px !important;
     font-size:22px !important;
+    margin-top:0 !important;
+    margin-bottom:14px !important;
   }
 
   .result-card{
@@ -591,57 +594,4 @@ body.doom{
   .tip{
     display:none;
   }
-}
-/* ===== 816 微調：筊杯往上移到中間 ===== */
-
-/* 筊杯整區大幅往上 */
-.bua-stage{
-  height:180px !important;
-  margin:-70px auto -10px !important;
-}
-
-/* 筊杯再大一點 */
-.bua{
-  width:108px !important;
-  height:160px !important;
-  top:-35px !important;
-}
-
-.bua-left{
-  left:calc(50% - 150px) !important;
-}
-
-.bua-right{
-  right:calc(50% - 150px) !important;
-}
-
-/* 按鈕跟著往上 */
-.throw-btn{
-  margin-top:-30px !important;
-  margin-bottom:8px !important;
-}
-
-/* 結果框往上 */
-.result-card{
-  width:min(980px,94vw) !important;
-  min-height:235px !important;
-  padding:24px 42px 26px !important;
-  margin:-15px auto 4px !important;
-}
-
-/* 結果文字放大 */
-.result{
-  font-size:58px !important;
-}
-
-.meaning{
-  font-size:27px !important;
-}
-
-.market-info{
-  font-size:19px !important;
-}
-
-.poem{
-  font-size:21px !important;
 }
