@@ -692,3 +692,37 @@ body{
 .result-card{
   min-height:210px !important;
 }
+.couplet-board{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+  position:relative;
+  z-index:20;
+}
+
+.couplet-board img{
+  width:min(900px,95vw);
+  height:auto;
+
+  filter:
+    drop-shadow(0 0 18px rgba(255,200,80,.45))
+    drop-shadow(0 0 50px rgba(255,120,0,.25));
+
+  animation: boardFloat 4s ease-in-out infinite;
+}
+
+@keyframes boardFloat{
+  0%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-4px);
+  }
+
+  100%{
+    transform:translateY(0);
+  }
+}
