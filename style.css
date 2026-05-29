@@ -170,7 +170,7 @@ body.doom{
   width:100%;
   display:flex;
   justify-content:center;
-  margin:-22px 0 -34px !important;
+  margin:8px 0 -34px !important;
   position:relative;
   z-index:30;
 }
@@ -191,7 +191,7 @@ body.doom{
   justify-content:center;
   align-items:flex-start;
   gap:34px !important;
-  margin:-10px auto -56px !important;
+  margin:10px auto -56px !important;
   position:relative;
   z-index:35;
 }
