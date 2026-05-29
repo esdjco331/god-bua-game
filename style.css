@@ -83,7 +83,7 @@ body.doom{
 /* 主體 */
 
 .app{
-  position:relative;
+  ;
   z-index:5;
   height:100vh !important;
   min-height:100vh !important;
@@ -409,7 +409,10 @@ body.doom{
 }
 
 .result{
-  font-size:58px !important;
+  position:relative;
+  top:-10px;
+
+  font-size:72px !important;
   font-weight:900;
   letter-spacing:.12em;
   line-height:1.08 !important;
