@@ -412,7 +412,7 @@ body.doom{
   position:relative;
   top:-5px;
 
-  font-size:72px !important;
+  font-size:70px !important;
   font-weight:900;
   letter-spacing:.12em;
   line-height:1.08 !important;
@@ -420,14 +420,14 @@ body.doom{
 
 .meaning{
   margin-top:10px !important;
-  font-size:35px !important;
+  font-size:30px !important;
   color:#ffe0a5;
   line-height:1.45;
 }
 
 .market-info{
   margin-top:8px !important;
-  font-size:25px !important;
+  font-size:22px !important;
   color:#ffe8b8;
   line-height:1.55;
   opacity:.95;
@@ -451,7 +451,7 @@ body.doom{
   margin:14px auto 0 !important;
   max-width:760px;
   line-height:1.75;
-  font-size:25px !important;
+  font-size:22px !important;
   color:#fff5d7;
   border-top:1px solid rgba(255,215,122,.22);
   padding-top:12px !important;
