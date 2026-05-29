@@ -25,10 +25,6 @@ let H = 0;
 let particles = [];
 let audioCtx = null;
 
-/* ======================= */
-/* 籤詩 */
-/* ======================= */
-
 const poems = {
   up: [
     "金光照殿，貴人扶盤。量能若起，紅燭可期。",
@@ -244,42 +240,173 @@ function formatVolume(v) {
 }
 
 /* ======================= */
-/* 即時行情查詢 */
+/* 行情查詢 */
 /* ======================= */
 
-async function getStockQuote() {
-  const code = stockInput.value.trim();
+async function fetchJson(url) {
+  const res = await fetch(url, {
+    cache: "no-store"
+  });
 
-  if (!code) {
-    return null;
+  if (!res.ok) {
+    throw new Error("HTTP " + res.status);
   }
 
+  return await res.json();
+}
+
+async function getStockQuoteFromTwse(code) {
+  const url =
+    "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL";
+
+  const data = await fetchJson(url);
+
+  const item = data.find((x) => {
+    return (
+      x.Code === code ||
+      x["證券代號"] === code ||
+      x.code === code
+    );
+  });
+
+  if (!item) return null;
+
+  const name =
+    item.Name ||
+    item["證券名稱"] ||
+    item.name ||
+    "";
+
+  const price =
+    cleanNumber(item.ClosingPrice) ||
+    cleanNumber(item.Close) ||
+    cleanNumber(item["收盤價"]);
+
+  const change =
+    cleanNumber(item.Change) ||
+    cleanNumber(item.ChangePrice) ||
+    cleanNumber(item["漲跌價差"]) ||
+    0;
+
+  const volume =
+    cleanNumber(item.TradeVolume) ||
+    cleanNumber(item.TradingShares) ||
+    cleanNumber(item["成交股數"]) ||
+    0;
+
+  let percent = 0;
+
+  if (!isNaN(price) && !isNaN(change) && price - change !== 0) {
+    percent = (change / (price - change)) * 100;
+  }
+
+  return {
+    code,
+    name,
+    price,
+    change,
+    percent,
+    volume,
+    source: "TWSE"
+  };
+}
+
+async function getStockQuoteFromTpex(code) {
+  const urls = [
+    "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_quotes",
+    "https://www.tpex.org.tw/openapi/v1/tpex_esb_latest_statistics"
+  ];
+
+  for (const url of urls) {
+    try {
+      const data = await fetchJson(url);
+
+      const item = data.find((x) => {
+        return (
+          x.Code === code ||
+          x.SecuritiesCompanyCode === code ||
+          x["證券代號"] === code ||
+          x["代號"] === code
+        );
+      });
+
+      if (!item) continue;
+
+      const name =
+        item.Name ||
+        item.CompanyName ||
+        item.SecuritiesCompanyName ||
+        item["證券名稱"] ||
+        item["名稱"] ||
+        "";
+
+      const price =
+        cleanNumber(item.ClosingPrice) ||
+        cleanNumber(item.Close) ||
+        cleanNumber(item.LatestPrice) ||
+        cleanNumber(item["收盤價"]) ||
+        cleanNumber(item["最新成交價"]);
+
+      const change =
+        cleanNumber(item.Change) ||
+        cleanNumber(item.ChangePrice) ||
+        cleanNumber(item["漲跌價差"]) ||
+        cleanNumber(item["漲跌"]) ||
+        0;
+
+      const volume =
+        cleanNumber(item.TradeVolume) ||
+        cleanNumber(item.TradingShares) ||
+        cleanNumber(item.Volume) ||
+        cleanNumber(item["成交股數"]) ||
+        cleanNumber(item["成交量"]) ||
+        0;
+
+      let percent = 0;
+
+      if (!isNaN(price) && !isNaN(change) && price - change !== 0) {
+        percent = (change / (price - change)) * 100;
+      }
+
+      return {
+        code,
+        name,
+        price,
+        change,
+        percent,
+        volume,
+        source: "TPEx"
+      };
+
+    } catch (e) {
+      console.log("TPEx 查詢失敗", url, e);
+    }
+  }
+
+  return null;
+}
+
+async function getStockQuoteFromMis(code) {
   const url =
     `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
 
   try {
-    const res = await fetch(url);
-    const data = await res.json();
+    const data = await fetchJson(url);
 
-    if (!data.msgArray || data.msgArray.length === 0) {
-      return null;
-    }
+    if (!data.msgArray || data.msgArray.length === 0) return null;
 
     const item = data.msgArray.find((x) => x.c === code);
 
-    if (!item) {
-      return null;
-    }
+    if (!item) return null;
 
     let price = cleanNumber(item.z);
     const yesterday = cleanNumber(item.y);
-    const open = cleanNumber(item.o);
-    const high = cleanNumber(item.h);
-    const low = cleanNumber(item.l);
     const volume = cleanNumber(item.v);
 
     if (isNaN(price)) {
-      price = cleanNumber(item.a?.split("_")[0]) || cleanNumber(item.b?.split("_")[0]);
+      price =
+        cleanNumber(item.a?.split("_")[0]) ||
+        cleanNumber(item.b?.split("_")[0]);
     }
 
     let change = 0;
@@ -294,20 +421,49 @@ async function getStockQuote() {
       code: item.c,
       name: item.n || "",
       price,
-      yesterday,
-      open,
-      high,
-      low,
       change,
       percent,
       volume,
-      time: item.t || ""
+      source: "MIS"
     };
 
   } catch (e) {
-    console.log("行情查詢失敗", e);
+    console.log("MIS 查詢失敗", e);
     return null;
   }
+}
+
+async function getStockQuote() {
+  const code = stockInput.value.trim();
+
+  if (!code) return null;
+
+  marketInfoEl.innerHTML = "正在查詢今日行情...";
+
+  let quote = null;
+
+  try {
+    quote = await getStockQuoteFromTwse(code);
+  } catch (e) {
+    console.log("TWSE 查詢失敗", e);
+  }
+
+  if (!quote) {
+    quote = await getStockQuoteFromTpex(code);
+  }
+
+  if (!quote || !quote.name) {
+    const misQuote = await getStockQuoteFromMis(code);
+
+    if (misQuote) {
+      quote = {
+        ...quote,
+        ...misQuote
+      };
+    }
+  }
+
+  return quote;
 }
 
 function getStockDisplayFromQuote(q) {
@@ -328,7 +484,8 @@ function renderMarketInfo(q) {
   if (!marketInfoEl) return;
 
   if (!q) {
-    marketInfoEl.innerHTML = "查無今日行情資料，可能是代號錯誤、休市或資料暫時無法取得。";
+    marketInfoEl.innerHTML =
+      "查無今日行情資料，可能是代號錯誤、休市或資料暫時無法取得。";
     return;
   }
 
@@ -340,7 +497,7 @@ function renderMarketInfo(q) {
   const sign = q.change > 0 ? "+" : "";
 
   marketInfoEl.innerHTML = `
-    <span>${q.code} ${q.name}</span>｜
+    <span>${q.code} ${q.name || ""}</span>｜
     現價 <span class="${cls}">${formatPrice(q.price)}</span>｜
     漲跌 <span class="${cls}">${sign}${q.change.toFixed(2)}</span>｜
     漲幅 <span class="${cls}">${sign}${q.percent.toFixed(2)}%</span>｜
