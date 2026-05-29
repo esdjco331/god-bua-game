@@ -394,7 +394,7 @@ body.doom{
 
 .result-card{
   width:min(980px,94vw) !important;
-  min-height:235px !important;
+  min-height:225px !important;
   margin:-4px auto 4px !important;
   padding:24px 42px 26px !important;
   border:1px solid rgba(255,215,122,.28);
