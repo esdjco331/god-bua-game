@@ -683,30 +683,59 @@ body.doom{
     display:none;
   }
 }
-/* ===== 圖片屋簷版 ===== */
-
-.temple-gate{
-  display:none !important;
-}
+/* ===== 圖片屋簷版：縮小＋放後方＋不裁切 ===== */
 
 .roof-banner{
   position:fixed;
   top:0;
-  left:0;
+  left:50%;
   width:100%;
-  z-index:6;
+  transform:translateX(-50%);
+  z-index:2;
   pointer-events:none;
 }
 
 .roof-banner img{
   width:100%;
-  height:auto;
+  max-height:165px;
+  object-fit:contain;
+  object-position:top center;
   display:block;
   filter:
     drop-shadow(0 8px 18px rgba(0,0,0,.55))
-    drop-shadow(0 0 25px rgba(255,160,40,.25));
+    drop-shadow(0 0 22px rgba(255,160,40,.22));
+}
+
+.temple-gate{
+  display:none !important;
 }
 
 .app{
-  padding-top:118px !important;
+  padding-top:95px !important;
+  overflow:visible !important;
+}
+
+.hero{
+  transform:scale(.72) !important;
+  transform-origin:top center !important;
+}
+
+.main-signboard{
+  margin:-18px 0 -28px !important;
+  z-index:30 !important;
+}
+
+.temple-banner{
+  margin:0 auto -30px !important;
+  z-index:35 !important;
+}
+
+.result-card{
+  margin-top:-4px !important;
+}
+
+html,
+body{
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
 }
