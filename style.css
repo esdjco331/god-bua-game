@@ -544,8 +544,8 @@ h1{
 .up{
   color:#5dff8a;
   text-shadow:
-    0 0 24px #00ff66,
-    0 0 70px #00ff66;
+    0 0 24px #ff0000,
+    0 0 70px #ff0000;
 }
 
 .mid{
@@ -557,8 +557,8 @@ h1{
 .down{
   color:#ff6868;
   text-shadow:
-    0 0 24px #ff0000,
-    0 0 70px #ff0000;
+    0 0 24px #00ff66,
+    0 0 70px #00ff66;
 }
 
 /* 中螢幕 */
