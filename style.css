@@ -592,18 +592,19 @@ body.doom{
     display:none;
   }
 }
-/* ===== 815 微調：筊杯放大、結果框放大並上移 ===== */
+/* ===== 816 微調：筊杯往上移到中間 ===== */
 
-/* 筊杯整區往上、放大 */
+/* 筊杯整區大幅往上 */
 .bua-stage{
-  height:150px !important;
-  margin:-24px auto -4px !important;
+  height:180px !important;
+  margin:-70px auto -10px !important;
 }
 
+/* 筊杯再大一點 */
 .bua{
   width:108px !important;
   height:160px !important;
-  top:-8px !important;
+  top:-35px !important;
 }
 
 .bua-left{
@@ -614,18 +615,18 @@ body.doom{
   right:calc(50% - 150px) !important;
 }
 
-/* 按鈕跟結果一起往上靠 */
+/* 按鈕跟著往上 */
 .throw-btn{
-  margin-top:-4px !important;
-  margin-bottom:10px !important;
+  margin-top:-30px !important;
+  margin-bottom:8px !important;
 }
 
-/* 結果卡片放大、往上 */
+/* 結果框往上 */
 .result-card{
   width:min(980px,94vw) !important;
   min-height:235px !important;
   padding:24px 42px 26px !important;
-  margin:-8px auto 4px !important;
+  margin:-15px auto 4px !important;
 }
 
 /* 結果文字放大 */
