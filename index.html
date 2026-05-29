@@ -1,132 +1,148 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+/>
 
-  <title>股市問神明｜擲筊籤詩</title>
+<title>股市問神明｜擲筊籤詩</title>
 
-  <meta
-    name="description"
-    content="股市問神明，輸入台股代號，擲筊問漲跌，查看今日即時行情、漲幅與成交量。"
-  />
+<meta
+  name="description"
+  content="股市問神明，輸入台股代號，擲筊問漲跌，查看今日即時行情、漲幅與成交量。"
+/>
 
-  <meta name="theme-color" content="#3b0000" />
+<meta name="theme-color" content="#3b0000">
 
-  <link rel="stylesheet" href="style.css?v=807" />
+<link rel="stylesheet" href="style.css?v=808">
 </head>
 
 <body>
 
-  <canvas id="particles"></canvas>
-  <canvas id="kline"></canvas>
+<canvas id="particles"></canvas>
+<canvas id="kline"></canvas>
 
-  <div class="temple-gate">
-    <div class="roof"></div>
-    <div class="lantern l1">財</div>
-    <div class="lantern l2">運</div>
+<div class="temple-gate">
+  <div class="roof"></div>
+  <div class="lantern l1">財</div>
+  <div class="lantern l2">運</div>
+</div>
+
+<main class="app">
+
+<section class="hero">
+
+  <div class="god-light" id="godLight"></div>
+
+  <!-- 主牌匾 -->
+  <div class="main-signboard">
+    <img
+      src="images/signboard.png"
+      alt="股市問神明"
+    >
   </div>
 
-  <main class="app">
+  <!-- 對聯區 -->
+  <div class="temple-banner">
 
-    <section class="hero">
+    <img
+      class="banner-left"
+      src="images/couplet-left.png"
+      alt="擲筊問漲跌"
+    >
 
-      <div class="god-light" id="godLight"></div>
+    <div class="banner-center">
 
-      <div class="main-signboard">
-        <img src="images/signboard.png" alt="股市問神明" />
-      </div>
+      <img
+        class="banner-title"
+        src="images/couplet-center.png"
+        alt="台股神諭"
+      >
 
-      <div class="temple-banner">
+      <div class="stock-box">
 
-        <img
-          class="banner-left"
-          src="images/couplet-left.png"
-          alt="擲筊問漲跌"
-        />
+        <input
+          id="stockInput"
+          type="text"
+          inputmode="numeric"
+          maxlength="12"
+          autocomplete="off"
+          placeholder="輸入股票代號，例如 2330"
+        >
 
-        <div class="banner-center">
-
-          <img
-            class="banner-title"
-            src="images/couplet-center.png"
-            alt="台股神諭"
-          />
-
-          <div class="stock-box">
-            <input
-              id="stockInput"
-              type="text"
-              inputmode="numeric"
-              maxlength="12"
-              autocomplete="off"
-              placeholder="輸入股票代號，例如 2330"
-            />
-
-            <button id="clearBtn" type="button">
-              清除
-            </button>
-          </div>
-
-        </div>
-
-        <img
-          class="banner-right"
-          src="images/couplet-right.png"
-          alt="籤詩看方向"
-        />
+        <button id="clearBtn" type="button">
+          清除
+        </button>
 
       </div>
 
-      <div class="bua-stage" id="stage">
-        <div class="bua bua-left" id="leftBua">
-          <span class="shine"></span>
-        </div>
+    </div>
 
-        <div class="bua bua-right" id="rightBua">
-          <span class="shine"></span>
-        </div>
-      </div>
+    <img
+      class="banner-right"
+      src="images/couplet-right.png"
+      alt="籤詩看方向"
+    >
 
-      <button class="throw-btn" id="throwBtn" type="button">
-        開始擲筊
-      </button>
+  </div>
 
-      <div class="result-card">
+  <!-- 筊杯 -->
+  <div class="bua-stage" id="stage">
 
-        <div class="result" id="result">
-          請誠心默念股票代號
-        </div>
+    <div class="bua bua-left" id="leftBua">
+      <span class="shine"></span>
+    </div>
 
-        <div class="meaning" id="meaning">
-          神明將給你明日方向
-        </div>
+    <div class="bua bua-right" id="rightBua">
+      <span class="shine"></span>
+    </div>
 
-        <div class="market-info" id="marketInfo">
-          輸入股號後，擲筊會同步查詢即時行情
-        </div>
+  </div>
 
-        <div class="poem" id="poem"></div>
+  <button
+    class="throw-btn"
+    id="throwBtn"
+    type="button"
+  >
+    開始擲筊
+  </button>
 
-      </div>
+  <!-- 結果 -->
+  <div class="result-card">
 
-      <p class="tip">
-        聖杯＝會漲　笑杯＝觀望　哭杯＝會跌｜純娛樂，非投資建議，Hank敬上
-      </p>
+    <div class="result" id="result">
+      請誠心默念股票代號
+    </div>
 
-    </section>
+    <div class="meaning" id="meaning">
+      神明將給你明日方向
+    </div>
 
-  </main>
+    <div class="market-info" id="marketInfo">
+      輸入股號後，擲筊會同步查詢即時行情
+    </div>
 
-  <noscript>
-    請開啟 JavaScript 才能使用股市問神明。
-  </noscript>
+    <div class="poem" id="poem"></div>
 
-  <script src="script.js?v=807"></script>
+  </div>
+
+  <p class="tip">
+    聖杯＝會漲　笑杯＝觀望　哭杯＝會跌｜
+    純娛樂，非投資建議，Hank敬上
+  </p>
+
+</section>
+
+</main>
+
+<noscript>
+請開啟 JavaScript 才能使用股市問神明。
+</noscript>
+
+<script src="script.js?v=808"></script>
 
 </body>
 </html>
