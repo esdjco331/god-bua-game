@@ -739,132 +739,106 @@ body{
   overflow-x:hidden !important;
   overflow-y:auto !important;
 }
-/* ===== 810 微調：縮小整體、避免拉 BAR ===== */
+/* ===== 813 修正：無拉BAR版本 ===== */
+
+html,
+body{
+  height:100%;
+  overflow:hidden !important;
+}
 
 .roof-banner img{
   max-height:145px !important;
 }
 
 .app{
-  padding-top:82px !important;
+  height:100vh !important;
+  padding-top:78px !important;
   padding-bottom:0 !important;
+  overflow:hidden !important;
 }
 
 .hero{
-  transform:scale(.68) !important;
+  width:min(1450px,98vw) !important;
+  transform:scale(.64) !important;
   transform-origin:top center !important;
 }
 
 .main-signboard{
-  margin:-22px 0 -32px !important;
+  margin:-24px 0 -36px !important;
 }
 
 .main-signboard img{
-  width:min(520px,54vw) !important;
+  width:min(590px,58vw) !important;
 }
 
 .temple-banner{
-  margin:-6px auto -38px !important;
-  gap:26px !important;
+  gap:40px !important;
+  margin:-8px auto -46px !important;
 }
 
 .banner-left,
 .banner-right{
-  width:126px !important;
+  width:136px !important;
 }
 
 .banner-center{
-  width:min(455px,40vw) !important;
-  padding-top:26px !important;
+  width:min(535px,45vw) !important;
+  padding-top:24px !important;
 }
 
 .banner-center .stock-box{
-  margin-top:14px !important;
+  margin-top:12px !important;
 }
 
 .bua-stage{
-  height:138px !important;
-  margin-top:-4px !important;
+  height:128px !important;
+  margin-top:-10px !important;
+  margin-bottom:0 !important;
 }
 
 .bua{
-  width:94px !important;
-  height:142px !important;
+  width:90px !important;
+  height:135px !important;
+  top:0 !important;
 }
 
 .throw-btn{
-  margin-top:-8px !important;
-  margin-bottom:4px !important;
-}
-
-.result-card{
-  margin-top:-4px !important;
-  min-height:176px !important;
-  padding:14px 22px 16px !important;
-}
-
-.tip{
-  margin-top:4px !important;
-}
-/* ===== 812 版面微調：加寬、結果框加大、筊杯上移 ===== */
-
-.hero{
-  width:min(1450px,98vw) !important;
-}
-
-.roof-banner img{
-  max-height:155px !important;
-}
-
-.main-signboard img{
-  width:min(600px,60vw) !important;
-}
-
-.temple-banner{
-  gap:42px !important;
-}
-
-.banner-left,
-.banner-right{
-  width:138px !important;
-}
-
-.banner-center{
-  width:min(540px,46vw) !important;
-}
-
-/* 筊杯區往上 */
-.bua-stage{
-  margin-top:-18px !important;
-  height:150px !important;
-}
-
-/* 開始擲筊按鈕不要貼結果框 */
-.throw-btn{
+  height:48px !important;
+  min-width:190px !important;
+  font-size:21px !important;
   margin-top:-10px !important;
-  margin-bottom:22px !important;
+  margin-bottom:12px !important;
 }
 
-/* 結果說明框加大 */
 .result-card{
-  width:min(880px,94vw) !important;
-  min-height:225px !important;
-  padding:22px 34px 26px !important;
+  width:min(860px,94vw) !important;
+  min-height:195px !important;
+  padding:18px 30px 20px !important;
   margin-top:0 !important;
 }
 
 .result{
-  font-size:50px !important;
+  font-size:44px !important;
 }
 
 .meaning{
-  font-size:24px !important;
+  font-size:21px !important;
+  margin-top:6px !important;
 }
 
 .market-info{
-  font-size:17px !important;
+  font-size:15px !important;
+  margin-top:6px !important;
 }
 
 .poem{
-  font-size:18px !important;
+  font-size:16px !important;
+  margin-top:10px !important;
+  padding-top:10px !important;
+}
+
+.tip{
+  margin-top:6px !important;
+  font-size:14px !important;
 }
