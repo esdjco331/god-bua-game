@@ -7,13 +7,13 @@
 html,
 body{
   width:100%;
-  min-height:100%;
+  height:100%;
+  overflow:hidden !important;
 }
 
 body{
+  position:relative;
   min-height:100vh;
-  overflow-x:hidden;
-  overflow-y:auto;
   font-family:"Microsoft JhengHei",sans-serif;
   color:#fff4df;
   background:
@@ -169,18 +169,22 @@ body.doom{
 .app{
   position:relative;
   z-index:5;
-  min-height:100vh;
+  height:100vh !important;
+  min-height:100vh !important;
   display:flex;
   justify-content:center;
   align-items:flex-start;
-  padding:78px 18px 50px;
+  padding:64px 18px 8px !important;
+  overflow:hidden !important;
 }
 
 .hero{
-  width:min(1050px,100%);
+  width:min(1250px,96vw) !important;
   text-align:center;
   position:relative;
-  overflow:visible;
+  overflow:visible !important;
+  transform:scale(.78);
+  transform-origin:top center;
 }
 
 /* 神明降駕 */
@@ -204,29 +208,10 @@ body.doom{
   pointer-events:none;
 }
 
-.god-symbol{
-  position:absolute;
-  left:50%;
-  top:85px;
-  transform:translateX(-50%) translateY(-26px);
-  font-size:92px;
-  font-weight:900;
-  color:rgba(255,236,155,.22);
-  text-shadow:
-    0 0 25px rgba(255,230,110,.9),
-    0 0 80px rgba(255,150,0,.75);
-  opacity:.25;
-  pointer-events:none;
-}
-
 .god-light.descend{
   animation:
     godLightDescend 1.6s ease-out,
     breath 3.5s ease-in-out 1.6s infinite alternate;
-}
-
-.god-symbol.descend{
-  animation:godSymbolDescend 1.6s ease-out;
 }
 
 @keyframes breath{
@@ -263,43 +248,62 @@ body.doom{
   }
 }
 
-@keyframes godSymbolDescend{
-  0%{
-    transform:translateX(-50%) translateY(-260px) scale(.4);
-    opacity:0;
-  }
-  45%{
-    transform:translateX(-50%) translateY(-5px) scale(1.35);
-    opacity:.95;
-  }
-  75%{
-    transform:translateX(-50%) translateY(-35px) scale(1.05);
-    opacity:.65;
-  }
-  100%{
-    transform:translateX(-50%) translateY(-26px) scale(1);
-    opacity:.25;
-  }
+/* 主牌匾 */
+
+.main-signboard{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin:-18px 0 -22px;
+  position:relative;
+  z-index:35;
 }
 
-/* 標題 */
-
-h1{
-  font-size:clamp(54px,6vw,82px);
-  letter-spacing:.25em;
-  text-indent:.25em;
-  font-weight:300;
-  line-height:1.08;
-  text-shadow:
-    0 0 22px rgba(255,238,180,.55),
-    0 0 55px rgba(255,80,0,.45);
+.main-signboard img{
+  width:min(560px,58vw);
+  height:auto;
+  filter:
+    drop-shadow(0 0 18px rgba(255,210,80,.55))
+    drop-shadow(0 0 45px rgba(255,120,0,.35));
 }
 
-.subtitle{
-  margin-top:8px;
-  color:#ffd99a;
-  font-size:clamp(16px,2vw,23px);
-  letter-spacing:.18em;
+/* 三張式對聯 */
+
+.temple-banner{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  gap:30px;
+  margin:0 auto -24px;
+  position:relative;
+  z-index:25;
+}
+
+.banner-left,
+.banner-right{
+  width:132px;
+  height:auto;
+  flex-shrink:0;
+  filter:
+    drop-shadow(0 0 15px rgba(255,200,80,.45))
+    drop-shadow(0 0 40px rgba(255,120,0,.25));
+}
+
+.banner-center{
+  width:min(480px,42vw);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:28px;
+}
+
+.banner-title{
+  width:100%;
+  height:auto;
+  filter:
+    drop-shadow(0 0 15px rgba(255,200,80,.45))
+    drop-shadow(0 0 40px rgba(255,120,0,.25));
 }
 
 /* 股票輸入 */
@@ -307,8 +311,8 @@ h1{
 .stock-box{
   position:relative;
   z-index:30;
-  margin:18px auto 0;
-  width:min(580px,100%);
+  margin:18px auto 0 !important;
+  width:100% !important;
   display:flex;
   gap:10px;
   justify-content:center;
@@ -355,16 +359,16 @@ h1{
 .bua-stage{
   position:relative;
   width:min(760px,100%);
-  height:225px;
-  margin:8px auto 0;
+  height:150px !important;
+  margin:0 auto !important;
   perspective:900px;
 }
 
 .bua{
   position:absolute;
-  top:26px;
-  width:132px;
-  height:200px;
+  top:0 !important;
+  width:100px !important;
+  height:150px !important;
   border-radius:56% 44% 58% 42% / 62% 38% 62% 38%;
   transform-style:preserve-3d;
   background:
@@ -389,12 +393,12 @@ h1{
 }
 
 .bua-left{
-  left:250px;
+  left:calc(50% - 145px);
   transform:rotateZ(-24deg) rotateY(-20deg) rotateX(12deg);
 }
 
 .bua-right{
-  right:250px;
+  right:calc(50% - 145px);
   transform:rotateZ(204deg) rotateY(20deg) rotateX(12deg);
 }
 
@@ -449,13 +453,14 @@ h1{
 .throw-btn{
   position:relative;
   z-index:30;
-  margin-top:6px;
-  min-width:230px;
-  height:62px;
+  margin-top:-4px !important;
+  margin-bottom:10px !important;
+  min-width:205px !important;
+  height:54px !important;
   border:0;
   border-radius:24px;
   cursor:pointer;
-  font-size:26px;
+  font-size:24px !important;
   font-weight:900;
   color:#fff8dc;
   background:linear-gradient(135deg,#ffdf67,#ff8b00,#c94700);
@@ -471,13 +476,12 @@ h1{
 /* 結果 */
 
 .result-card{
-  margin:18px auto 0;
-  width:min(840px,100%);
-  min-height:250px;
-  height:auto;
+  width:min(760px,92vw) !important;
+  min-height:185px !important;
+  margin:0 auto 6px !important;
+  padding:16px 24px 18px !important;
   border:1px solid rgba(255,215,122,.28);
   border-radius:28px;
-  padding:20px 26px 24px;
   background:
     linear-gradient(180deg,
     rgba(35,5,0,.72),
@@ -488,21 +492,21 @@ h1{
 }
 
 .result{
-  font-size:clamp(42px,4vw,58px);
+  font-size:44px !important;
   font-weight:900;
   letter-spacing:.12em;
-  line-height:1.1;
+  line-height:1.1 !important;
 }
 
 .meaning{
-  margin-top:8px;
+  margin-top:8px !important;
   font-size:clamp(18px,2vw,25px);
   color:#ffe0a5;
   line-height:1.45;
 }
 
 .market-info{
-  margin-top:10px;
+  margin-top:8px !important;
   font-size:16px;
   color:#ffe8b8;
   line-height:1.55;
@@ -524,7 +528,7 @@ h1{
 }
 
 .poem{
-  margin:14px auto 0;
+  margin:12px auto 0 !important;
   max-width:720px;
   line-height:1.75;
   font-size:17px;
@@ -535,11 +539,13 @@ h1{
 }
 
 .tip{
-  margin-top:18px;
-  margin-bottom:30px;
+  margin-top:8px !important;
+  margin-bottom:0;
   color:rgba(255,246,220,.72);
   font-size:15px;
 }
+
+/* 結果顏色：台股漲紅跌綠 */
 
 .result.up,
 .up{
@@ -564,25 +570,27 @@ h1{
     0 0 70px #00ff66 !important;
 }
 
-/* 中螢幕 */
-
-@media(max-width:900px){
-  .bua-left{
-    left:calc(50% - 175px);
-  }
-
-  .bua-right{
-    right:calc(50% - 175px);
-  }
-}
-
-/* 手機 */
+/* 手機版 */
 
 @media(max-width:720px){
+  html,
+  body{
+    height:auto;
+    min-height:100%;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+  }
 
   .app{
-    padding-top:82px;
-    padding-bottom:35px;
+    height:auto !important;
+    min-height:100vh !important;
+    padding:70px 14px 30px !important;
+    overflow:visible !important;
+  }
+
+  .hero{
+    transform:scale(1);
+    width:100% !important;
   }
 
   .roof{
@@ -596,20 +604,32 @@ h1{
     font-size:20px;
   }
 
-  h1{
-    font-size:38px;
-    letter-spacing:.14em;
-    text-indent:.14em;
+  .main-signboard{
+    margin:0 0 -6px;
   }
 
-  .subtitle{
-    font-size:14px;
-    letter-spacing:.06em;
+  .main-signboard img{
+    width:86vw;
   }
 
-  .stock-box{
+  .temple-banner{
+    gap:8px;
+    margin:0 auto 0;
+  }
+
+  .banner-left,
+  .banner-right{
+    width:70px;
+  }
+
+  .banner-center{
+    width:58vw;
+    padding-top:8px;
+  }
+
+  .banner-center .stock-box{
+    margin-top:12px !important;
     flex-direction:column;
-    margin-top:14px;
   }
 
   .stock-box button{
@@ -617,13 +637,13 @@ h1{
   }
 
   .bua-stage{
-    height:170px;
+    height:170px !important;
   }
 
   .bua{
-    width:88px;
-    height:136px;
-    top:24px;
+    width:88px !important;
+    height:136px !important;
+    top:24px !important;
   }
 
   .bua-left{
@@ -635,19 +655,19 @@ h1{
   }
 
   .throw-btn{
-    height:52px;
-    min-width:190px;
-    font-size:22px;
+    height:52px !important;
+    min-width:190px !important;
+    font-size:22px !important;
   }
 
   .result-card{
-    margin-top:14px;
-    padding:16px;
-    min-height:auto;
+    margin-top:14px !important;
+    padding:16px !important;
+    min-height:auto !important;
   }
 
   .result{
-    font-size:34px;
+    font-size:34px !important;
   }
 
   .meaning{
@@ -662,229 +682,4 @@ h1{
   .tip{
     display:none;
   }
-}
-/* ===== 新版三張式宮廟版面：不裁切下方內容 ===== */
-
-html,
-body{
-  width:100%;
-  min-height:100%;
-  overflow-x:hidden;
-  overflow-y:auto !important;
-}
-
-body{
-  position:relative;
-}
-
-.app{
-  min-height:100vh !important;
-  padding-top:68px !important;
-  padding-bottom:40px !important;
-  overflow:visible !important;
-}
-
-.hero{
-  transform:scale(.82);
-  transform-origin:top center;
-}
-
-.temple-banner{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  gap:26px;
-  margin:0 auto -8px;
-  position:relative;
-  z-index:25;
-}
-
-.banner-left,
-.banner-right{
-  width:135px;
-  height:auto;
-  filter:
-    drop-shadow(0 0 15px rgba(255,200,80,.45))
-    drop-shadow(0 0 40px rgba(255,120,0,.25));
-}
-
-.banner-center{
-  width:min(500px,46vw);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding-top:18px;
-}
-
-.banner-title{
-  width:85%;
-  height:auto;
-  filter:
-    drop-shadow(0 0 15px rgba(255,200,80,.45))
-    drop-shadow(0 0 40px rgba(255,120,0,.25));
-}
-
-.banner-center .stock-box{
-  width:100%;
-  margin-top:24px;
-}
-
-.bua-stage{
-  height:175px;
-  margin-top:-10px;
-}
-
-.bua{
-  top:8px;
-  width:112px;
-  height:170px;
-}
-
-.throw-btn{
-  margin-top:-4px;
-}
-
-.result-card{
-  margin-top:10px;
-  min-height:205px !important;
-}
-
-@media(max-width:720px){
-  .hero{
-    transform:scale(.92);
-  }
-
-  .temple-banner{
-    gap:8px;
-    margin-bottom:0;
-  }
-
-  .banner-left,
-  .banner-right{
-    width:70px;
-  }
-
-  .banner-center{
-    width:58vw;
-    padding-top:8px;
-  }
-
-  .banner-center .stock-box{
-    margin-top:12px;
-  }
-}
-/* ===== 主牌匾 ===== */
-
-.main-signboard{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  margin:10px 0 5px;
-  position:relative;
-  z-index:30;
-}
-
-.main-signboard img{
-  width:min(700px,80vw);
-  height:auto;
-
-  filter:
-    drop-shadow(0 0 18px rgba(255,210,80,.55))
-    drop-shadow(0 0 45px rgba(255,120,0,.35));
-}
-/* =======================================
-   台股神諭新版版面修正
-======================================= */
-
-.app{
-    padding-top:110px !important;
-    padding-bottom:80px !important;
-    min-height:auto !important;
-}
-
-.hero{
-    width:min(1300px,95vw) !important;
-    overflow:visible !important;
-}
-
-/* 對聯區 */
-
-.temple-banner{
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    gap:40px;
-    margin-top:10px;
-    margin-bottom:10px;
-}
-
-.temple-banner img{
-    display:block;
-}
-
-.temple-left,
-.temple-right{
-    width:140px;
-    flex-shrink:0;
-}
-
-.temple-center{
-    width:min(520px,60vw);
-}
-
-/* 股票輸入框 */
-
-.stock-box{
-    margin-top:18px !important;
-    margin-bottom:20px !important;
-    width:min(700px,90vw) !important;
-}
-
-/* 筊杯 */
-
-.bua-stage{
-    margin-top:10px !important;
-    margin-bottom:15px !important;
-    min-height:220px !important;
-}
-
-/* 按鈕 */
-
-.throw-btn{
-    margin-top:10px !important;
-    margin-bottom:20px !important;
-}
-
-/* 結果卡 */
-
-.result-card{
-    width:min(760px,95vw) !important;
-    margin:20px auto !important;
-}
-
-/* 手機 */
-
-@media (max-width:768px){
-
-    .temple-banner{
-        gap:12px;
-    }
-
-    .temple-left,
-    .temple-right{
-        width:80px;
-    }
-
-    .temple-center{
-        width:240px;
-    }
-
-    .stock-box{
-        width:95%;
-    }
-
-    .result-card{
-        width:95%;
-    }
 }
