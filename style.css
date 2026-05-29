@@ -739,3 +739,70 @@ body{
   overflow-x:hidden !important;
   overflow-y:auto !important;
 }
+/* ===== 810 微調：縮小整體、避免拉 BAR ===== */
+
+.roof-banner img{
+  max-height:145px !important;
+}
+
+.app{
+  padding-top:82px !important;
+  padding-bottom:0 !important;
+}
+
+.hero{
+  transform:scale(.68) !important;
+  transform-origin:top center !important;
+}
+
+.main-signboard{
+  margin:-22px 0 -32px !important;
+}
+
+.main-signboard img{
+  width:min(520px,54vw) !important;
+}
+
+.temple-banner{
+  margin:-6px auto -38px !important;
+  gap:26px !important;
+}
+
+.banner-left,
+.banner-right{
+  width:126px !important;
+}
+
+.banner-center{
+  width:min(455px,40vw) !important;
+  padding-top:26px !important;
+}
+
+.banner-center .stock-box{
+  margin-top:14px !important;
+}
+
+.bua-stage{
+  height:138px !important;
+  margin-top:-4px !important;
+}
+
+.bua{
+  width:94px !important;
+  height:142px !important;
+}
+
+.throw-btn{
+  margin-top:-8px !important;
+  margin-bottom:4px !important;
+}
+
+.result-card{
+  margin-top:-4px !important;
+  min-height:176px !important;
+  padding:14px 22px 16px !important;
+}
+
+.tip{
+  margin-top:4px !important;
+}
