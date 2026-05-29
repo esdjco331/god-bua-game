@@ -663,85 +663,46 @@ h1{
     display:none;
   }
 }
-/* 強制單頁完整顯示，不出現右側拉 BAR */
+/* ===== 新版三張式宮廟版面：不裁切下方內容 ===== */
+
 html,
 body{
   width:100%;
-  height:100%;
-  overflow:hidden !important;
+  min-height:100%;
+  overflow-x:hidden;
+  overflow-y:auto !important;
 }
 
 body{
-  position:fixed;
-  inset:0;
+  position:relative;
 }
 
 .app{
-  height:100vh !important;
   min-height:100vh !important;
-  padding-top:72px !important;
-  padding-bottom:0 !important;
-  overflow:hidden !important;
+  padding-top:68px !important;
+  padding-bottom:40px !important;
+  overflow:visible !important;
 }
 
 .hero{
-  transform:scale(.86);
+  transform:scale(.82);
   transform-origin:top center;
 }
-
-.result-card{
-  min-height:210px !important;
-}
-.couplet-board{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin-bottom:20px;
-  position:relative;
-  z-index:20;
-}
-
-.couplet-board img{
-  width:min(900px,95vw);
-  height:auto;
-
-  filter:
-    drop-shadow(0 0 18px rgba(255,200,80,.45))
-    drop-shadow(0 0 50px rgba(255,120,0,.25));
-
-  animation: boardFloat 4s ease-in-out infinite;
-}
-
-@keyframes boardFloat{
-  0%{
-    transform:translateY(0);
-  }
-
-  50%{
-    transform:translateY(-4px);
-  }
-
-  100%{
-    transform:translateY(0);
-  }
-}
-/* ===== 三張式宮廟對聯版面 ===== */
 
 .temple-banner{
   width:100%;
   display:flex;
   justify-content:center;
   align-items:flex-start;
-  gap:28px;
-  margin:0 auto 12px;
+  gap:26px;
+  margin:0 auto -8px;
   position:relative;
   z-index:25;
 }
 
 .banner-left,
 .banner-right{
-  width:150px;
+  width:135px;
   height:auto;
   filter:
     drop-shadow(0 0 15px rgba(255,200,80,.45))
@@ -749,11 +710,11 @@ body{
 }
 
 .banner-center{
-  width:min(520px,48vw);
+  width:min(500px,46vw);
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding-top:20px;
+  padding-top:18px;
 }
 
 .banner-title{
@@ -766,17 +727,42 @@ body{
 
 .banner-center .stock-box{
   width:100%;
-  margin-top:34px;
+  margin-top:24px;
+}
+
+.bua-stage{
+  height:175px;
+  margin-top:-10px;
+}
+
+.bua{
+  top:8px;
+  width:112px;
+  height:170px;
+}
+
+.throw-btn{
+  margin-top:-4px;
+}
+
+.result-card{
+  margin-top:10px;
+  min-height:205px !important;
 }
 
 @media(max-width:720px){
+  .hero{
+    transform:scale(.92);
+  }
+
   .temple-banner{
-    gap:10px;
+    gap:8px;
+    margin-bottom:0;
   }
 
   .banner-left,
   .banner-right{
-    width:72px;
+    width:70px;
   }
 
   .banner-center{
@@ -785,6 +771,6 @@ body{
   }
 
   .banner-center .stock-box{
-    margin-top:14px;
+    margin-top:12px;
   }
 }
