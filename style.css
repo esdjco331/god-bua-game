@@ -541,24 +541,27 @@ h1{
   font-size:15px;
 }
 
+.result.up,
 .up{
-  color:#5dff8a;
+  color:#ff6868 !important;
   text-shadow:
     0 0 24px #ff0000,
-    0 0 70px #ff0000;
+    0 0 70px #ff0000 !important;
 }
 
+.result.mid,
 .mid{
-  color:#ffe37a;
+  color:#ffe37a !important;
   text-shadow:
-    0 0 28px rgba(255,211,0,.8);
+    0 0 28px rgba(255,211,0,.8) !important;
 }
 
+.result.down,
 .down{
-  color:#ff6868;
+  color:#5dff8a !important;
   text-shadow:
     0 0 24px #00ff66,
-    0 0 70px #00ff66;
+    0 0 70px #00ff66 !important;
 }
 
 /* 中螢幕 */
