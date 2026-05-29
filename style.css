@@ -718,7 +718,7 @@ body{
 }
 
 .banner-title{
-  width:100%;
+  width:85%;
   height:auto;
   filter:
     drop-shadow(0 0 15px rgba(255,200,80,.45))
@@ -773,4 +773,118 @@ body{
   .banner-center .stock-box{
     margin-top:12px;
   }
+}
+/* ===== 主牌匾 ===== */
+
+.main-signboard{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin:10px 0 5px;
+  position:relative;
+  z-index:30;
+}
+
+.main-signboard img{
+  width:min(700px,80vw);
+  height:auto;
+
+  filter:
+    drop-shadow(0 0 18px rgba(255,210,80,.55))
+    drop-shadow(0 0 45px rgba(255,120,0,.35));
+}
+/* =======================================
+   台股神諭新版版面修正
+======================================= */
+
+.app{
+    padding-top:110px !important;
+    padding-bottom:80px !important;
+    min-height:auto !important;
+}
+
+.hero{
+    width:min(1300px,95vw) !important;
+    overflow:visible !important;
+}
+
+/* 對聯區 */
+
+.temple-banner{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:40px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.temple-banner img{
+    display:block;
+}
+
+.temple-left,
+.temple-right{
+    width:140px;
+    flex-shrink:0;
+}
+
+.temple-center{
+    width:min(520px,60vw);
+}
+
+/* 股票輸入框 */
+
+.stock-box{
+    margin-top:18px !important;
+    margin-bottom:20px !important;
+    width:min(700px,90vw) !important;
+}
+
+/* 筊杯 */
+
+.bua-stage{
+    margin-top:10px !important;
+    margin-bottom:15px !important;
+    min-height:220px !important;
+}
+
+/* 按鈕 */
+
+.throw-btn{
+    margin-top:10px !important;
+    margin-bottom:20px !important;
+}
+
+/* 結果卡 */
+
+.result-card{
+    width:min(760px,95vw) !important;
+    margin:20px auto !important;
+}
+
+/* 手機 */
+
+@media (max-width:768px){
+
+    .temple-banner{
+        gap:12px;
+    }
+
+    .temple-left,
+    .temple-right{
+        width:80px;
+    }
+
+    .temple-center{
+        width:240px;
+    }
+
+    .stock-box{
+        width:95%;
+    }
+
+    .result-card{
+        width:95%;
+    }
 }
