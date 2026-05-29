@@ -4,7 +4,8 @@
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   width:100%;
   min-height:100%;
 }
@@ -16,26 +17,26 @@ body{
   font-family:"Microsoft JhengHei",sans-serif;
   color:#fff4df;
   background:
-  radial-gradient(circle at 50% 30%,
-  rgba(150,45,0,.55),
-  rgba(25,0,0,.86) 45%,
-  #020000 100%);
+    radial-gradient(circle at 50% 30%,
+    rgba(150,45,0,.55),
+    rgba(25,0,0,.86) 45%,
+    #020000 100%);
 }
 
 body.blessed{
   background:
-  radial-gradient(circle at 50% 35%,
-  rgba(255,238,120,.48),
-  rgba(65,20,0,.88) 55%,
-  #050000 100%);
+    radial-gradient(circle at 50% 35%,
+    rgba(255,238,120,.48),
+    rgba(65,20,0,.88) 55%,
+    #050000 100%);
 }
 
 body.doom{
   background:
-  radial-gradient(circle at 50% 35%,
-  rgba(80,80,80,.22),
-  rgba(12,0,0,.9) 55%,
-  #000 100%);
+    radial-gradient(circle at 50% 35%,
+    rgba(80,80,80,.22),
+    rgba(12,0,0,.9) 55%,
+    #000 100%);
 }
 
 #particles,
@@ -52,16 +53,14 @@ body.doom{
   mix-blend-mode:screen;
 }
 
-/* ====================== */
-/* 上方宮殿 */
-/* ====================== */
+/* 宮殿 */
 
 .temple-gate{
   position:fixed;
   top:0;
   left:0;
   width:100%;
-  height:150px;
+  height:105px;
   z-index:3;
   pointer-events:none;
 }
@@ -69,34 +68,34 @@ body.doom{
 .roof{
   position:relative;
   width:100%;
-  height:78px;
+  height:62px;
   background:
-  linear-gradient(135deg,
-  transparent 0 5%,
-  #7a0000 5% 13%,
-  #f5c45a 13% 15%,
-  #5c0000 15% 87%,
-  #8c0000 87% 95%,
-  transparent 95% 100%);
+    linear-gradient(135deg,
+    transparent 0 5%,
+    #7a0000 5% 13%,
+    #f5c45a 13% 15%,
+    #5c0000 15% 87%,
+    #8c0000 87% 95%,
+    transparent 95% 100%);
   clip-path:polygon(4% 0,96% 0,100% 60%,94% 100%,6% 100%,0 60%);
   box-shadow:
-  0 12px 35px rgba(0,0,0,.65),
-  inset 0 -8px 0 rgba(212,151,54,.55);
+    0 12px 35px rgba(0,0,0,.65),
+    inset 0 -6px 0 rgba(212,151,54,.55);
 }
 
 .roof::before{
   content:"";
   position:absolute;
   left:50%;
-  top:8px;
+  top:6px;
   transform:translateX(-50%);
   width:62%;
-  height:18px;
+  height:15px;
   background:
-  repeating-linear-gradient(
-  90deg,
-  #b40000 0 32px,
-  #8b0000 32px 64px);
+    repeating-linear-gradient(
+    90deg,
+    #b40000 0 32px,
+    #8b0000 32px 64px);
   border-top:3px solid #ffd36b;
   border-bottom:3px solid #d49736;
   opacity:.9;
@@ -106,10 +105,10 @@ body.doom{
   content:"股市問神明";
   position:absolute;
   left:50%;
-  bottom:10px;
+  bottom:6px;
   transform:translateX(-50%);
   color:#ffd98a;
-  font-size:22px;
+  font-size:15px;
   font-weight:900;
   letter-spacing:.25em;
   text-shadow:0 0 12px rgba(255,190,60,.8);
@@ -117,24 +116,24 @@ body.doom{
 
 .lantern{
   position:absolute;
-  top:55px;
-  width:56px;
-  height:76px;
+  top:38px;
+  width:44px;
+  height:60px;
   border-radius:50%;
   display:grid;
   place-items:center;
   color:#4b0000;
-  font-size:26px;
+  font-size:21px;
   font-weight:900;
   background:
-  radial-gradient(circle at 35% 25%,
-  #fff0a3,
-  #ff6931 35%,
-  #df1a00 70%,
-  #760000);
+    radial-gradient(circle at 35% 25%,
+    #fff0a3,
+    #ff6931 35%,
+    #df1a00 70%,
+    #760000);
   box-shadow:
-  0 0 28px rgba(255,70,0,.9),
-  inset 0 -8px 12px rgba(80,0,0,.35);
+    0 0 28px rgba(255,70,0,.9),
+    inset 0 -8px 12px rgba(80,0,0,.35);
   animation:swing 3.2s ease-in-out infinite alternate;
 }
 
@@ -147,34 +146,44 @@ body.doom{
   background:#d49736;
 }
 
-.l1{left:9%;}
-.l2{right:9%;animation-delay:-1s;}
-
-@keyframes swing{
-  from{transform:rotate(-5deg);}
-  to{transform:rotate(5deg);}
+.l1{
+  left:9%;
 }
 
-/* ====================== */
+.l2{
+  right:9%;
+  animation-delay:-1s;
+}
+
+@keyframes swing{
+  from{
+    transform:rotate(-5deg);
+  }
+  to{
+    transform:rotate(5deg);
+  }
+}
+
+/* 主體 */
 
 .app{
   position:relative;
   z-index:5;
   min-height:100vh;
-  display:grid;
-  place-items:start center;
-  padding:110px 18px 90px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:78px 18px 50px;
 }
 
 .hero{
-  width:min(920px,100%);
+  width:min(1050px,100%);
   text-align:center;
   position:relative;
+  overflow:visible;
 }
 
-/* ====================== */
 /* 神明降駕 */
-/* ====================== */
 
 .god-light{
   position:absolute;
@@ -185,10 +194,10 @@ body.doom{
   border-radius:50%;
   transform:translateX(-50%);
   background:
-  radial-gradient(circle,
-  rgba(255,245,155,.66),
-  rgba(255,161,0,.28) 42%,
-  transparent 72%);
+    radial-gradient(circle,
+    rgba(255,245,155,.66),
+    rgba(255,161,0,.28) 42%,
+    transparent 72%);
   filter:blur(16px);
   opacity:.5;
   animation:breath 3.8s ease-in-out infinite alternate;
@@ -204,16 +213,16 @@ body.doom{
   font-weight:900;
   color:rgba(255,236,155,.22);
   text-shadow:
-  0 0 25px rgba(255,230,110,.9),
-  0 0 80px rgba(255,150,0,.75);
+    0 0 25px rgba(255,230,110,.9),
+    0 0 80px rgba(255,150,0,.75);
   opacity:.25;
   pointer-events:none;
 }
 
 .god-light.descend{
   animation:
-  godLightDescend 1.6s ease-out,
-  breath 3.5s ease-in-out 1.6s infinite alternate;
+    godLightDescend 1.6s ease-out,
+    breath 3.5s ease-in-out 1.6s infinite alternate;
 }
 
 .god-symbol.descend{
@@ -273,34 +282,33 @@ body.doom{
   }
 }
 
-/* ====================== */
+/* 標題 */
 
 h1{
-  font-size:clamp(44px,7vw,82px);
+  font-size:clamp(54px,6vw,82px);
   letter-spacing:.25em;
   text-indent:.25em;
   font-weight:300;
+  line-height:1.08;
   text-shadow:
-  0 0 22px rgba(255,238,180,.55),
-  0 0 55px rgba(255,80,0,.45);
+    0 0 22px rgba(255,238,180,.55),
+    0 0 55px rgba(255,80,0,.45);
 }
 
 .subtitle{
-  margin-top:10px;
+  margin-top:8px;
   color:#ffd99a;
-  font-size:clamp(15px,2.2vw,24px);
+  font-size:clamp(16px,2vw,23px);
   letter-spacing:.18em;
 }
 
-/* ====================== */
 /* 股票輸入 */
-/* ====================== */
 
 .stock-box{
   position:relative;
   z-index:30;
-  margin:26px auto 0;
-  width:min(520px,100%);
+  margin:18px auto 0;
+  width:min(580px,100%);
   display:flex;
   gap:10px;
   justify-content:center;
@@ -310,7 +318,7 @@ h1{
   position:relative;
   z-index:31;
   flex:1;
-  height:52px;
+  height:48px;
   border:1px solid rgba(255,207,113,.65);
   border-radius:15px;
   padding:0 18px;
@@ -319,15 +327,15 @@ h1{
   color:#fff7e6;
   background:rgba(0,0,0,.35);
   box-shadow:
-  inset 0 0 18px rgba(255,157,0,.08),
-  0 0 18px rgba(255,180,60,.14);
+    inset 0 0 18px rgba(255,157,0,.08),
+    0 0 18px rgba(255,180,60,.14);
 }
 
 .stock-box input:focus{
   border-color:#ffcf66;
   box-shadow:
-  0 0 20px rgba(255,190,80,.45),
-  inset 0 0 18px rgba(255,157,0,.12);
+    0 0 20px rgba(255,190,80,.45),
+    inset 0 0 18px rgba(255,157,0,.12);
 }
 
 .stock-box button{
@@ -342,34 +350,32 @@ h1{
   cursor:pointer;
 }
 
-/* ====================== */
 /* 筊杯 */
-/* ====================== */
 
 .bua-stage{
   position:relative;
-  width:min(690px,100%);
-  height:265px;
-  margin:14px auto 0;
+  width:min(760px,100%);
+  height:225px;
+  margin:8px auto 0;
   perspective:900px;
 }
 
 .bua{
   position:absolute;
-  top:38px;
-  width:145px;
-  height:220px;
+  top:26px;
+  width:132px;
+  height:200px;
   border-radius:56% 44% 58% 42% / 62% 38% 62% 38%;
   transform-style:preserve-3d;
   background:
-  radial-gradient(circle at 34% 30%,rgba(255,255,255,.58),transparent 18%),
-  radial-gradient(circle at 70% 72%,rgba(40,0,0,.65),transparent 35%),
-  linear-gradient(135deg,#ff3232,#bd0000 48%,#4b0000);
+    radial-gradient(circle at 34% 30%,rgba(255,255,255,.58),transparent 18%),
+    radial-gradient(circle at 70% 72%,rgba(40,0,0,.65),transparent 35%),
+    linear-gradient(135deg,#ff3232,#bd0000 48%,#4b0000);
   box-shadow:
-  inset 16px 10px 22px rgba(255,255,255,.17),
-  inset -24px -22px 28px rgba(0,0,0,.55),
-  0 28px 38px rgba(0,0,0,.62),
-  0 0 35px rgba(255,0,0,.25);
+    inset 16px 10px 22px rgba(255,255,255,.17),
+    inset -24px -22px 28px rgba(0,0,0,.55),
+    0 28px 38px rgba(0,0,0,.62),
+    0 0 35px rgba(255,0,0,.25);
   transition:.7s;
 }
 
@@ -383,19 +389,19 @@ h1{
 }
 
 .bua-left{
-  left:145px;
+  left:250px;
   transform:rotateZ(-24deg) rotateY(-20deg) rotateX(12deg);
 }
 
 .bua-right{
-  right:145px;
+  right:250px;
   transform:rotateZ(204deg) rotateY(20deg) rotateX(12deg);
 }
 
 .flat{
   background:
-  radial-gradient(circle at 40% 35%,rgba(255,255,255,.94),transparent 28%),
-  linear-gradient(135deg,#fff7f2,#ffc6bd 62%,#8f1c14);
+    radial-gradient(circle at 40% 35%,rgba(255,255,255,.94),transparent 28%),
+    linear-gradient(135deg,#fff7f2,#ffc6bd 62%,#8f1c14);
 }
 
 .flat.bua-left{
@@ -438,75 +444,99 @@ h1{
   }
 }
 
-/* ====================== */
+/* 按鈕 */
 
 .throw-btn{
   position:relative;
   z-index:30;
-  margin-top:8px;
-  min-width:240px;
-  height:70px;
+  margin-top:6px;
+  min-width:230px;
+  height:62px;
   border:0;
   border-radius:24px;
   cursor:pointer;
-  font-size:28px;
+  font-size:26px;
   font-weight:900;
   color:#fff8dc;
   background:linear-gradient(135deg,#ffdf67,#ff8b00,#c94700);
   box-shadow:
-  0 16px 38px rgba(255,136,0,.38),
-  inset 0 2px 14px rgba(255,255,255,.45);
+    0 16px 38px rgba(255,136,0,.38),
+    inset 0 2px 14px rgba(255,255,255,.45);
 }
 
 .throw-btn:active{
   transform:translateY(2px) scale(.98);
 }
 
-/* ====================== */
 /* 結果 */
-/* ====================== */
 
 .result-card{
-  margin:26px auto 0;
-  width:min(720px,100%);
-  min-height:170px;
+  margin:18px auto 0;
+  width:min(840px,100%);
+  min-height:250px;
+  height:auto;
   border:1px solid rgba(255,215,122,.28);
   border-radius:28px;
-  padding:22px 24px;
+  padding:20px 26px 24px;
   background:
-  linear-gradient(180deg,
-  rgba(35,5,0,.72),
-  rgba(0,0,0,.36));
+    linear-gradient(180deg,
+    rgba(35,5,0,.72),
+    rgba(0,0,0,.36));
   backdrop-filter:blur(10px);
   box-shadow:0 18px 44px rgba(0,0,0,.35);
+  overflow:visible;
 }
 
 .result{
-  font-size:clamp(34px,5vw,62px);
+  font-size:clamp(42px,4vw,58px);
   font-weight:900;
   letter-spacing:.12em;
+  line-height:1.1;
 }
 
 .meaning{
   margin-top:8px;
-  font-size:clamp(18px,2.4vw,28px);
+  font-size:clamp(18px,2vw,25px);
   color:#ffe0a5;
   line-height:1.45;
 }
 
+.market-info{
+  margin-top:10px;
+  font-size:16px;
+  color:#ffe8b8;
+  line-height:1.55;
+  opacity:.95;
+}
+
+.market-info .up-price{
+  color:#ff6b6b;
+  text-shadow:0 0 12px rgba(255,0,0,.65);
+}
+
+.market-info .down-price{
+  color:#5dff8a;
+  text-shadow:0 0 12px rgba(0,255,100,.65);
+}
+
+.market-info .flat-price{
+  color:#ffd96b;
+}
+
 .poem{
-  margin:16px auto 0;
-  max-width:600px;
-  line-height:1.8;
-  font-size:18px;
+  margin:14px auto 0;
+  max-width:720px;
+  line-height:1.75;
+  font-size:17px;
   color:#fff5d7;
   border-top:1px solid rgba(255,215,122,.22);
   padding-top:12px;
+  overflow:visible;
 }
 
 .tip{
   margin-top:18px;
-  margin-bottom:40px;
+  margin-bottom:30px;
   color:rgba(255,246,220,.72);
   font-size:15px;
 }
@@ -514,63 +544,69 @@ h1{
 .up{
   color:#5dff8a;
   text-shadow:
-  0 0 24px #00ff66,
-  0 0 70px #00ff66;
+    0 0 24px #00ff66,
+    0 0 70px #00ff66;
 }
 
 .mid{
   color:#ffe37a;
   text-shadow:
-  0 0 28px rgba(255,211,0,.8);
+    0 0 28px rgba(255,211,0,.8);
 }
 
 .down{
   color:#ff6868;
   text-shadow:
-  0 0 24px #ff0000,
-  0 0 70px #ff0000;
+    0 0 24px #ff0000,
+    0 0 70px #ff0000;
 }
 
-/* ====================== */
-/* 手機版 */
-/* ====================== */
+/* 中螢幕 */
+
+@media(max-width:900px){
+  .bua-left{
+    left:calc(50% - 175px);
+  }
+
+  .bua-right{
+    right:calc(50% - 175px);
+  }
+}
+
+/* 手機 */
 
 @media(max-width:720px){
 
   .app{
-    padding-top:100px;
-    padding-bottom:80px;
+    padding-top:82px;
+    padding-bottom:35px;
   }
 
   .roof{
-    height:62px;
-  }
-
-  .roof::after{
-    font-size:16px;
-    letter-spacing:.18em;
+    height:54px;
   }
 
   .lantern{
     width:42px;
     height:58px;
-    top:48px;
+    top:46px;
     font-size:20px;
   }
 
   h1{
-    font-size:44px;
+    font-size:38px;
     letter-spacing:.14em;
     text-indent:.14em;
   }
 
   .subtitle{
+    font-size:14px;
     letter-spacing:.06em;
   }
 
   .stock-box{
     flex-direction:column;
-    margin-top:18px;
+    margin-top:14px;
   }
 
   .stock-box button{
@@ -578,280 +614,49 @@ h1{
   }
 
   .bua-stage{
-    height:220px;
+    height:170px;
   }
 
   .bua{
-    width:104px;
-    height:162px;
-    top:38px;
+    width:88px;
+    height:136px;
+    top:24px;
   }
 
   .bua-left{
-    left:calc(50% - 138px);
+    left:calc(50% - 112px);
   }
 
   .bua-right{
-    right:calc(50% - 138px);
+    right:calc(50% - 112px);
   }
 
   .throw-btn{
-    height:58px;
+    height:52px;
     min-width:190px;
-    font-size:23px;
+    font-size:22px;
   }
 
   .result-card{
-    margin-top:18px;
-    padding:18px;
-  }
-
-  .poem{
-    font-size:16px;
-  }
-}
-
-@media(max-width:430px){
-
-  .bua-left{
-    left:36px;
-  }
-
-  .bua-right{
-    right:36px;
-  }
-}
-/* ====================== */
-/* 真正一頁完整顯示版 */
-/* ====================== */
-
-:root{
-  --ui-scale: .40;
-}
-
-html,
-body{
-  width:100%;
-  height:100%;
-  margin:0;
-  overflow:hidden !important;
-  scrollbar-width:none;
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar{
-  display:none;
-}
-
-body{
-  position:fixed !important;
-  inset:0 !important;
-}
-
-.app{
-  width:100vw !important;
-  height:100dvh !important;
-  min-height:100dvh !important;
-  padding:58px 18px 0 !important;
-  display:flex !important;
-  justify-content:center !important;
-  align-items:flex-start !important;
-  overflow:hidden !important;
-}
-
-.hero{
-  width:min(1050px,100%) !important;
-  height:auto !important;
-  overflow:visible !important;
-  transform:scale(var(--ui-scale)) !important;
-  transform-origin:top center !important;
-}
-
-/* 上方宮殿 */
-.temple-gate{
-  height:70px !important;
-}
-
-.roof{
-  height:46px !important;
-}
-
-.roof::before{
-  height:12px !important;
-  top:5px !important;
-}
-
-.roof::after{
-  font-size:13px !important;
-  bottom:4px !important;
-}
-
-.lantern{
-  top:32px !important;
-  width:38px !important;
-  height:50px !important;
-  font-size:18px !important;
-}
-
-/* 標題 */
-h1{
-  font-size:58px !important;
-  line-height:1 !important;
-}
-
-.subtitle{
-  margin-top:4px !important;
-  font-size:18px !important;
-}
-
-/* 輸入 */
-.stock-box{
-  width:min(560px,100%) !important;
-  margin-top:12px !important;
-}
-
-.stock-box input,
-.stock-box button{
-  height:40px !important;
-}
-
-/* 筊杯 */
-.bua-stage{
-  height:190px !important;
-  margin-top:0 !important;
-}
-
-.bua{
-  width:112px !important;
-  height:168px !important;
-  top:18px !important;
-}
-
-.bua-left{
-  left:260px !important;
-}
-
-.bua-right{
-  right:260px !important;
-}
-
-/* 按鈕 */
-.throw-btn{
-  width:210px !important;
-  height:54px !important;
-  font-size:23px !important;
-  margin-top:0 !important;
-}
-
-/* 結果區 */
-.result-card{
-  width:min(780px,100%) !important;
-  margin-top:12px !important;
-  min-height:auto !important;
-  max-height:none !important;
-  padding:13px 22px 16px !important;
-  overflow:visible !important;
-}
-
-.result{
-  font-size:42px !important;
-  line-height:1.05 !important;
-}
-
-.meaning{
-  margin-top:6px !important;
-  font-size:18px !important;
-  line-height:1.35 !important;
-}
-
-.market-info{
-  margin-top:6px !important;
-  font-size:14px !important;
-  line-height:1.35 !important;
-  color:#ffe8b8 !important;
-}
-
-.poem{
-  margin-top:6px !important;
-  padding-top:6px !important;
-  font-size:14px !important;
-  line-height:1.4 !important;
-  max-height:none !important;
-  overflow:visible !important;
-}
-
-.tip{
-  display:none !important;
-}
-
-/* 中螢幕 */
-@media(max-width:900px){
-  :root{
-    --ui-scale:.8;
-  }
-
-  .bua-left{
-    left:calc(50% - 170px) !important;
-  }
-
-  .bua-right{
-    right:calc(50% - 170px) !important;
-  }
-}
-
-/* 手機 */
-@media(max-width:720px){
-  :root{
-    --ui-scale:.92;
-  }
-
-  .app{
-    padding-top:54px !important;
-  }
-
-  h1{
-    font-size:34px !important;
-  }
-
-  .subtitle{
-    font-size:13px !important;
-  }
-
-  .bua-stage{
-    height:150px !important;
-  }
-
-  .bua{
-    width:78px !important;
-    height:122px !important;
-    top:20px !important;
-  }
-
-  .bua-left{
-    left:calc(50% - 105px) !important;
-  }
-
-  .bua-right{
-    right:calc(50% - 105px) !important;
-  }
-
-  .throw-btn{
-    height:46px !important;
-    font-size:20px !important;
-  }
-
-  .result-card{
-    margin-top:8px !important;
-    padding:12px !important;
+    margin-top:14px;
+    padding:16px;
+    min-height:auto;
   }
 
   .result{
-    font-size:32px !important;
+    font-size:34px;
   }
 
-  .meaning,
+  .meaning{
+    font-size:15px;
+  }
+
   .market-info,
   .poem{
-    font-size:13px !important;
+    font-size:13px;
+  }
+
+  .tip{
+    display:none;
   }
 }
