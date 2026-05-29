@@ -25,6 +25,8 @@ let H = 0;
 let particles = [];
 let audioCtx = null;
 
+const quoteCache = {};
+
 const poems = {
   up: [
     "金光照殿，貴人扶盤。量能若起，紅燭可期。",
@@ -46,10 +48,6 @@ const poems = {
   ]
 };
 
-/* ======================= */
-/* 畫面尺寸 */
-/* ======================= */
-
 function resize() {
   W = canvas.width = kCanvas.width = window.innerWidth;
   H = canvas.height = kCanvas.height = window.innerHeight;
@@ -57,10 +55,6 @@ function resize() {
 
 resize();
 window.addEventListener("resize", resize);
-
-/* ======================= */
-/* 金色粒子 */
-/* ======================= */
 
 function createParticles() {
   particles = Array.from({ length: 110 }, () => ({
@@ -101,10 +95,6 @@ function drawParticles() {
 
 drawParticles();
 
-/* ======================= */
-/* K 線背景 */
-/* ======================= */
-
 function drawKline() {
   kCtx.clearRect(0, 0, W, H);
 
@@ -112,20 +102,11 @@ function drawKline() {
 
   for (let x = 0; x < W; x += gap) {
     const h = 26 + Math.random() * 95;
-
-    const y =
-      H * 0.68 +
-      Math.sin((x + Date.now() / 25) / 55) * 80;
-
+    const y = H * 0.68 + Math.sin((x + Date.now() / 25) / 55) * 80;
     const isUp = Math.random() > 0.5;
 
-    kCtx.strokeStyle = isUp
-      ? "rgba(255,30,30,.5)"
-      : "rgba(0,230,90,.5)";
-
-    kCtx.fillStyle = isUp
-      ? "rgba(255,30,30,.25)"
-      : "rgba(0,230,90,.25)";
+    kCtx.strokeStyle = isUp ? "rgba(255,30,30,.5)" : "rgba(0,230,90,.5)";
+    kCtx.fillStyle = isUp ? "rgba(255,30,30,.25)" : "rgba(0,230,90,.25)";
 
     kCtx.beginPath();
     kCtx.moveTo(x + 5, y - h * 0.75);
@@ -138,10 +119,6 @@ function drawKline() {
 
 setInterval(drawKline, 420);
 drawKline();
-
-/* ======================= */
-/* 音效 */
-/* ======================= */
 
 function getAudioContext() {
   if (!audioCtx) {
@@ -166,7 +143,6 @@ function playThrowSound() {
     gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.16);
 
     osc.connect(gain).connect(ac.destination);
-
     osc.start(now + i * 0.045);
     osc.stop(now + i * 0.18);
   }
@@ -175,7 +151,6 @@ function playThrowSound() {
 function playBell(good = false) {
   const ac = getAudioContext();
   const now = ac.currentTime;
-
   const notes = good ? [523, 784, 1046] : [392, 330, 261];
 
   notes.forEach((freq, i) => {
@@ -190,15 +165,10 @@ function playBell(good = false) {
     gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.9);
 
     osc.connect(gain).connect(ac.destination);
-
     osc.start(now + i * 0.13);
     osc.stop(now + i * 0.95);
   });
 }
-
-/* ======================= */
-/* 神明降駕 */
-/* ======================= */
 
 function godDescend() {
   godLight.classList.remove("descend");
@@ -210,19 +180,12 @@ function godDescend() {
   godSymbol.classList.add("descend");
 }
 
-/* ======================= */
-/* 工具 */
-/* ======================= */
-
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function cleanNumber(v) {
-  if (v === undefined || v === null || v === "-" || v === "") {
-    return NaN;
-  }
-
+  if (v === undefined || v === null || v === "-" || v === "") return NaN;
   return parseFloat(String(v).replace(/,/g, ""));
 }
 
@@ -231,54 +194,81 @@ function formatPrice(v) {
   return Number(v).toFixed(2).replace(/\.00$/, "");
 }
 
-function formatVolume(v) {
-  if (!v || isNaN(v)) return "-";
+function normalizeVolume(v, source) {
+  if (!v || isNaN(v)) return NaN;
 
-  const lots = Math.round(v / 1000);
+  /*
+    TWSE OpenAPI 通常是「股」
+    MIS / 部分 TPEx 可能已經是「張」
+    大於 100000 通常視為股數，轉張
+  */
+
+  if (source === "TWSE") {
+    return Math.round(v / 1000);
+  }
+
+  if (v > 100000) {
+    return Math.round(v / 1000);
+  }
+
+  return Math.round(v);
+}
+
+function formatVolume(v, source) {
+  const lots = normalizeVolume(v, source);
+
+  if (!lots || isNaN(lots)) return "-";
 
   return lots.toLocaleString() + " 張";
 }
 
-/* ======================= */
-/* 行情查詢 */
-/* ======================= */
+async function fetchJson(url, timeoutMs = 3000) {
+  const proxyList = [
+    url,
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
+  ];
 
-async function fetchJson(url) {
-  const proxyUrl =
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+  for (const finalUrl of proxyList) {
+    const controller = new AbortController();
 
-  const res = await fetch(proxyUrl, {
-    cache: "no-store"
-  });
+    const timer = setTimeout(() => {
+      controller.abort();
+    }, timeoutMs);
 
-  if (!res.ok) {
-    throw new Error("HTTP " + res.status);
+    try {
+      const res = await fetch(finalUrl, {
+        cache: "no-store",
+        signal: controller.signal
+      });
+
+      clearTimeout(timer);
+
+      if (!res.ok) {
+        throw new Error("HTTP " + res.status);
+      }
+
+      return await res.json();
+
+    } catch (e) {
+      clearTimeout(timer);
+      console.log("fetch 失敗，換下一個來源", finalUrl, e);
+    }
   }
 
-  return await res.json();
+  throw new Error("所有來源都失敗");
 }
 
 async function getStockQuoteFromTwse(code) {
-  const url =
-    "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL";
-
-  const data = await fetchJson(url);
+  const url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL";
+  const data = await fetchJson(url, 3000);
 
   const item = data.find((x) => {
-    return (
-      x.Code === code ||
-      x["證券代號"] === code ||
-      x.code === code
-    );
+    return x.Code === code || x["證券代號"] === code || x.code === code;
   });
 
   if (!item) return null;
 
-  const name =
-    item.Name ||
-    item["證券名稱"] ||
-    item.name ||
-    "";
+  const name = item.Name || item["證券名稱"] || item.name || "";
 
   const price =
     cleanNumber(item.ClosingPrice) ||
@@ -322,7 +312,7 @@ async function getStockQuoteFromTpex(code) {
 
   for (const url of urls) {
     try {
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, 3000);
 
       const item = data.find((x) => {
         return (
@@ -394,7 +384,7 @@ async function getStockQuoteFromMis(code) {
     `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
 
   try {
-    const data = await fetchJson(url);
+    const data = await fetchJson(url, 3000);
 
     if (!data.msgArray || data.msgArray.length === 0) return null;
 
@@ -441,29 +431,40 @@ async function getStockQuote() {
 
   if (!code) return null;
 
-  marketInfoEl.innerHTML = "正在查詢今日行情...";
-
-  let quote = null;
-
-  try {
-    quote = await getStockQuoteFromTwse(code);
-  } catch (e) {
-    console.log("TWSE 查詢失敗", e);
+  if (quoteCache[code]) {
+    return quoteCache[code];
   }
 
-  if (!quote) {
-    quote = await getStockQuoteFromTpex(code);
+  if (marketInfoEl) {
+    marketInfoEl.innerHTML = "正在查詢今日行情...";
   }
 
-  if (!quote || !quote.name) {
-    const misQuote = await getStockQuoteFromMis(code);
+  const tasks = [
+    getStockQuoteFromTwse(code),
+    getStockQuoteFromTpex(code),
+    getStockQuoteFromMis(code)
+  ];
 
-    if (misQuote) {
-      quote = {
-        ...quote,
-        ...misQuote
-      };
-    }
+  const timeout = new Promise((resolve) => {
+    setTimeout(() => resolve(null), 4500);
+  });
+
+  const firstSuccess = Promise.any(
+    tasks.map((p) =>
+      p.then((result) => {
+        if (result && result.name) return result;
+        throw new Error("無資料");
+      })
+    )
+  ).catch(() => null);
+
+  const quote = await Promise.race([
+    firstSuccess,
+    timeout
+  ]);
+
+  if (quote) {
+    quoteCache[code] = quote;
   }
 
   return quote;
@@ -472,9 +473,7 @@ async function getStockQuote() {
 function getStockDisplayFromQuote(q) {
   const code = stockInput.value.trim();
 
-  if (!code) {
-    return "此股";
-  }
+  if (!code) return "此股";
 
   if (q && q.name) {
     return `${q.code} ${q.name}`;
@@ -504,15 +503,23 @@ function renderMarketInfo(q) {
     現價 <span class="${cls}">${formatPrice(q.price)}</span>｜
     漲跌 <span class="${cls}">${sign}${q.change.toFixed(2)}</span>｜
     漲幅 <span class="${cls}">${sign}${q.percent.toFixed(2)}%</span>｜
-    成交量 ${formatVolume(q.volume)}
+    成交量 ${formatVolume(q.volume, q.source)}
   `;
 }
 
-/* ======================= */
-/* 擲筊 */
-/* ======================= */
-
 function throwBua() {
+  const code = stockInput.value.trim();
+
+  if (!code) {
+    resultEl.className = "result mid";
+    resultEl.innerHTML = "請先輸入股號";
+    meaningEl.innerHTML = "例如：2330、2317、2454";
+    marketInfoEl.innerHTML = "尚未輸入股票代號，無法查詢行情。";
+    poemEl.innerHTML = "";
+    stockInput.focus();
+    return;
+  }
+
   throwBtn.disabled = true;
 
   document.body.className = "";
@@ -552,7 +559,14 @@ function throwBua() {
       rightBua.classList.add("flat");
     }
 
-    const quote = await getStockQuote();
+    let quote = null;
+
+    try {
+      quote = await getStockQuote();
+    } catch (e) {
+      console.log("行情查詢失敗", e);
+      quote = null;
+    }
 
     renderMarketInfo(quote);
 
@@ -604,10 +618,6 @@ function throwBua() {
     throwBtn.disabled = false;
   }, 1450);
 }
-
-/* ======================= */
-/* 事件 */
-/* ======================= */
 
 throwBtn.addEventListener("click", throwBua);
 
