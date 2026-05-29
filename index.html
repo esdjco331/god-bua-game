@@ -17,7 +17,7 @@
 
   <meta name="theme-color" content="#3b0000" />
 
-  <link rel="stylesheet" href="style.css?v=804" />
+  <link rel="stylesheet" href="style.css?v=805" />
 </head>
 
 <body>
@@ -41,27 +41,46 @@
         神
       </div>
 
-      <div class="couplet-board">
+      <div class="temple-banner">
+
         <img
-          src="images/couplet.png"
-          alt="台股神諭 擲筊問漲跌 籤詩看方向"
-        />
-      </div>
-
-      <div class="stock-box">
-
-        <input
-          id="stockInput"
-          type="text"
-          inputmode="numeric"
-          maxlength="12"
-          autocomplete="off"
-          placeholder="輸入股票代號，例如 2330"
+          class="banner-left"
+          src="images/couplet-left.png"
+          alt="擲筊問漲跌"
         />
 
-        <button id="clearBtn" type="button">
-          清除
-        </button>
+        <div class="banner-center">
+
+          <img
+            class="banner-title"
+            src="images/couplet-center.png"
+            alt="台股神諭"
+          />
+
+          <div class="stock-box">
+
+            <input
+              id="stockInput"
+              type="text"
+              inputmode="numeric"
+              maxlength="12"
+              autocomplete="off"
+              placeholder="輸入股票代號，例如 2330"
+            />
+
+            <button id="clearBtn" type="button">
+              清除
+            </button>
+
+          </div>
+
+        </div>
+
+        <img
+          class="banner-right"
+          src="images/couplet-right.png"
+          alt="籤詩看方向"
+        />
 
       </div>
 
@@ -111,7 +130,7 @@
     請開啟 JavaScript 才能使用股市問神明。
   </noscript>
 
-  <script src="script.js?v=804"></script>
+  <script src="script.js?v=805"></script>
 
 </body>
 </html>
