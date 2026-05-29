@@ -620,7 +620,7 @@ body.doom{
 
   .hero{
     width:100% !important;
-    transform:scale(.82) !important;
+    transform:scale(.80) !important;
     transform-origin:top center !important;
   }
 
