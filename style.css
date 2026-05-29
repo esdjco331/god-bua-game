@@ -630,3 +630,42 @@ body.doom{
     white-space:normal !important;
   }
 }
+/* ===== 電腦版依照螢幕高度自動縮放 ===== */
+
+@media (min-width:721px) and (max-height:950px){
+  .app{
+    padding-top:70px !important;
+  }
+
+  .hero{
+    transform:scale(.58) !important;
+  }
+}
+
+@media (min-width:721px) and (max-height:850px){
+  .app{
+    padding-top:58px !important;
+  }
+
+  .hero{
+    transform:scale(.52) !important;
+  }
+
+  .roof-banner img{
+    max-height:110px !important;
+  }
+}
+
+@media (min-width:721px) and (max-height:760px){
+  .app{
+    padding-top:48px !important;
+  }
+
+  .hero{
+    transform:scale(.48) !important;
+  }
+
+  .roof-banner img{
+    max-height:96px !important;
+  }
+}
