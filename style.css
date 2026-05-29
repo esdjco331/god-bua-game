@@ -638,7 +638,7 @@ body.doom{
   }
 
   .hero{
-    transform:scale(.73) !important;
+    transform:scale(.70) !important;
   }
 }
 
@@ -648,7 +648,7 @@ body.doom{
   }
 
   .hero{
-    transform:scale(.67) !important;
+    transform:scale(.65) !important;
   }
 
   .roof-banner img{
