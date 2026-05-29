@@ -486,141 +486,38 @@ body.doom{
     0 0 70px #00ff66 !important;
 }
 
-/* 手機版 */
-
-@media(max-width:720px){
-  html,
-  body{
-    height:auto;
-    min-height:100%;
-    overflow-x:hidden !important;
-    overflow-y:auto !important;
-  }
-
-  .roof-banner img{
-    max-height:90px !important;
-  }
-
-  .app{
-    height:auto !important;
-    min-height:100vh !important;
-    padding:70px 14px 30px !important;
-    overflow:visible !important;
-  }
-
-  .hero{
-    transform:scale(1) !important;
-    width:100% !important;
-  }
-
-  .main-signboard{
-    margin:0 0 -6px !important;
-  }
-
-  .main-signboard img{
-    width:86vw !important;
-  }
-
-  .temple-banner{
-    gap:8px !important;
-    margin:0 auto 0 !important;
-  }
-
-  .banner-left,
-  .banner-right{
-    width:70px !important;
-  }
-
-  .banner-center{
-    width:58vw !important;
-    padding-top:8px !important;
-  }
-
-  .banner-center .stock-box{
-    margin-top:12px !important;
-    flex-direction:column;
-  }
-
-  .stock-box button{
-    height:44px;
-  }
-
-  .bua-stage{
-    height:170px !important;
-    margin:0 auto !important;
-  }
-
-  .bua{
-    width:88px !important;
-    height:136px !important;
-    top:24px !important;
-  }
-
-  .bua-left{
-    left:calc(50% - 112px) !important;
-  }
-
-  .bua-right{
-    right:calc(50% - 112px) !important;
-  }
-
-  .throw-btn{
-    height:52px !important;
-    min-width:190px !important;
-    font-size:22px !important;
-    margin-top:0 !important;
-    margin-bottom:14px !important;
-  }
-
-  .result-card{
-    margin-top:14px !important;
-    padding:16px !important;
-    min-height:auto !important;
-  }
-
-  .result{
-    font-size:34px !important;
-  }
-
-  .meaning{
-    font-size:15px !important;
-  }
-
-  .market-info,
-  .poem{
-    font-size:13px !important;
-  }
-
-  .tip{
-    display:none;
-  }
-}
-/* ===== 手機最終版 ===== */
+/* ===== 手機 Safari / Chrome 最終版 v823 ===== */
 
 @media(max-width:720px){
 
   html,
   body{
     width:100%;
-    min-height:100%;
-    overflow-x:hidden !important;
-    overflow-y:auto !important;
+    height:100%;
+    overflow:hidden !important;
+  }
+
+  body{
+    position:fixed;
+    inset:0;
   }
 
   .roof-banner img{
-    max-height:72px !important;
+    max-height:62px !important;
   }
 
   .app{
+    width:100%;
+    height:100vh !important;
     min-height:100vh !important;
-    height:auto !important;
-    padding:55px 10px 25px !important;
-    overflow:visible !important;
+    padding:46px 8px 0 !important;
+    overflow:hidden !important;
   }
 
   .hero{
     width:100% !important;
-    transform:scale(.77) !important;
+    max-width:100vw !important;
+    transform:scale(.76) !important;
     transform-origin:top center !important;
   }
 
@@ -634,7 +531,7 @@ body.doom{
 
   .temple-banner{
     gap:10px !important;
-    margin:-6px auto -46px !important;
+    margin:-8px auto -56px !important;
   }
 
   .banner-left,
@@ -644,10 +541,13 @@ body.doom{
 
   .banner-center{
     width:62vw !important;
+    padding-top:8px !important;
   }
 
   .stock-box{
     margin-top:10px !important;
+    flex-direction:column !important;
+    gap:8px !important;
   }
 
   .stock-box input{
@@ -657,127 +557,76 @@ body.doom{
 
   .stock-box button{
     height:42px !important;
-  }
-
-  /* 擲筊放大 */
-
-  .bua-stage{
-    height:210px !important;
-    margin:-58px auto 0 !important;
-  }
-
-  .bua{
-    width:105px !important;
-    height:155px !important;
-    top:-30px !important;
-  }
-
-  .bua-left{
-    left:calc(50% - 135px) !important;
-  }
-
-  .bua-right{
-    right:calc(50% - 135px) !important;
-  }
-
-  /* 按鈕和結果框分開 */
-
-  .throw-btn{
-    margin-top:-10px !important;
-    margin-bottom:28px !important;
-    min-width:200px !important;
-    height:50px !important;
-    font-size:22px !important;
-  }
-
-  /* 結果框放大 */
-
-  .result-card{
-    width:95vw !important;
-    padding:22px !important;
-    margin:0 auto !important;
-    min-height:240px !important;
-  }
-
-  .result{
-    font-size:46px !important;
-  }
-
-  .meaning{
-    font-size:19px !important;
-  }
-
-  .market-info{
     font-size:15px !important;
   }
 
-  .poem{
-    font-size:16px !important;
-  }
-
-  .tip{
-    display:none !important;
-  }
-}
-/* ===== 820 手機版最後壓縮：去掉拉BAR ===== */
-
-@media(max-width:720px){
-
-  .hero{
-    transform:scale(.80) !important;
-    transform-origin:top center !important;
-  }
-
-  .app{
-    padding-top:48px !important;
-    padding-bottom:0 !important;
-    height:100vh !important;
-    overflow:hidden !important;
-  }
-
-  .roof-banner img{
-    max-height:64px !important;
-  }
-
-  .temple-banner{
-    margin:-8px auto -56px !important;
-  }
-
   .bua-stage{
-    height:190px !important;
-    margin:-68px auto -14px !important;
+    height:176px !important;
+    margin:-70px auto -16px !important;
   }
 
   .bua{
-    width:100px !important;
-    height:150px !important;
+    width:98px !important;
+    height:148px !important;
     top:-26px !important;
   }
 
+  .bua-left{
+    left:calc(50% - 132px) !important;
+  }
+
+  .bua-right{
+    right:calc(50% - 132px) !important;
+  }
+
   .throw-btn{
+    height:48px !important;
+    min-width:190px !important;
+    font-size:22px !important;
     margin-top:-18px !important;
-    margin-bottom:18px !important;
+    margin-bottom:10px !important;
   }
 
   .result-card{
-    min-height:220px !important;
-    padding:18px 18px 20px !important;
-    margin:-4px auto 0 !important;
+    width:94vw !important;
+    max-width:94vw !important;
+    min-height:190px !important;
+    padding:14px 16px 14px !important;
+    margin:-8px auto 0 !important;
   }
 
   .result{
-    font-size:42px !important;
+    font-size:38px !important;
+    line-height:1.05 !important;
   }
 
   .meaning{
-    font-size:17px !important;
+    font-size:15px !important;
+    margin-top:5px !important;
+    line-height:1.35 !important;
   }
 
   .market-info{
-    font-size:14px !important;
+    font-size:12.5px !important;
+    margin-top:5px !important;
+    line-height:1.4 !important;
   }
 
   .poem{
-    font-size:15px !important;
+    font-size:13.5px !important;
+    margin-top:7px !important;
+    padding-top:7px !important;
+    line-height:1.45 !important;
+  }
+
+  .tip{
+    display:block !important;
+    font-size:10.5px !important;
+    line-height:1.35 !important;
+    color:rgba(255,246,220,.72) !important;
+    margin-top:6px !important;
+    padding-bottom:6px !important;
+    text-align:center !important;
+    white-space:normal !important;
   }
 }
