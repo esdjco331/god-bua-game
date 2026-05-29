@@ -719,3 +719,65 @@ body.doom{
     display:none !important;
   }
 }
+/* ===== 820 手機版最後壓縮：去掉拉BAR ===== */
+
+@media(max-width:720px){
+
+  .hero{
+    transform:scale(.76) !important;
+    transform-origin:top center !important;
+  }
+
+  .app{
+    padding-top:48px !important;
+    padding-bottom:0 !important;
+    height:100vh !important;
+    overflow:hidden !important;
+  }
+
+  .roof-banner img{
+    max-height:64px !important;
+  }
+
+  .temple-banner{
+    margin:-8px auto -56px !important;
+  }
+
+  .bua-stage{
+    height:190px !important;
+    margin:-68px auto -14px !important;
+  }
+
+  .bua{
+    width:100px !important;
+    height:150px !important;
+    top:-26px !important;
+  }
+
+  .throw-btn{
+    margin-top:-18px !important;
+    margin-bottom:18px !important;
+  }
+
+  .result-card{
+    min-height:220px !important;
+    padding:18px 18px 20px !important;
+    margin:-4px auto 0 !important;
+  }
+
+  .result{
+    font-size:42px !important;
+  }
+
+  .meaning{
+    font-size:17px !important;
+  }
+
+  .market-info{
+    font-size:14px !important;
+  }
+
+  .poem{
+    font-size:15px !important;
+  }
+}
