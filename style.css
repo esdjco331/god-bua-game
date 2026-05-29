@@ -669,3 +669,9 @@ body.doom{
     max-height:96px !important;
   }
 }
+/* ===== 電腦版強制往下 ===== */
+@media (min-width:721px){
+  .app{
+    padding-top:90px !important;
+  }
+}
