@@ -527,11 +527,12 @@ body.doom{
   }
 
   .main-signboard{
-    margin:-30px 0 -18px !important;
+    margin:-10px 0 -18px !important;
   }
 
   .main-signboard img{
     width:88vw !important;
+    top:-15;
   }
 
   .temple-banner{
