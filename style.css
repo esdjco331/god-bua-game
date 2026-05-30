@@ -396,7 +396,7 @@ body.doom{
   width:min(980px,94vw) !important;
   min-height:225px !important;
   margin:-4px auto 4px !important;
-  padding:24px 42px 22px !important;
+  padding:24px 42px 20px !important;
   border:1px solid rgba(255,215,122,.28);
   border-radius:28px;
   background:
