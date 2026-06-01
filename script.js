@@ -210,8 +210,7 @@ function normalizeVolume(v, source) {
     return Math.round(v / 1000);
   }
 
-  if (v > 100000) {
-    return Math.round(v / 1000);
+  
   }
 
   return Math.round(v);
