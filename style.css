@@ -564,6 +564,7 @@ body.doom{
   }
 
   .stock-box input{
+    width:102% !important;
     height:42px !important;
     font-size:13px !important;
   }
