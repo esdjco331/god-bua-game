@@ -210,9 +210,6 @@ function normalizeVolume(v, source) {
     return Math.round(v / 1000);
   }
 
-  
-  }
-
   return Math.round(v);
 }
 
