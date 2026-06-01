@@ -251,7 +251,7 @@ async function fetchJson(url, timeoutMs = 3000) {
 
 async function getStockQuoteFromProxy(code) {
   try {
-    const url = `https://god-bua-game.vercel.app/api/quote?code=${code}`;
+    const url = `https://god-bua-game.vercel.app/api/quote?code=${encodeURIComponent(code)}`;
 
     const data = await fetchJson(url, 5000);
 
