@@ -208,7 +208,7 @@ body.doom{
 }
 
 .banner-center{
-  width:min(650px,40vw) !important;
+  width:min(580px,40vw) !important;
   display:flex;
   flex-direction:column;
   align-items:center;
