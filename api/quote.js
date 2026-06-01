@@ -8,6 +8,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "股票代號錯誤" });
   }
 
+  const clean = (v) => {
+    if (v === undefined || v === null) return NaN;
+    if (v === "" || v === "-" || v === "_" || v === "0.0000") return NaN;
+    const n = Number(String(v).replace(/,/g, ""));
+    return Number.isFinite(n) ? n : NaN;
+  };
+
   try {
     const url =
       `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
@@ -25,36 +32,39 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "查無即時行情" });
     }
 
-    const item = data.msgArray.find(x => x.c === code);
+    const item = data.msgArray.find((x) => {
+      if (x.c !== code) return false;
+
+      const z = clean(x.z);
+      const y = clean(x.y);
+
+      return !isNaN(z) && z > 0 && !isNaN(y) && y > 0;
+    });
 
     if (!item) {
-      return res.status(404).json({ error: "查無股票資料" });
+      return res.status(404).json({
+        error: "即時行情資料異常，請稍後再試"
+      });
     }
 
-    const clean = v => {
-      if (!v || v === "-" || v === "_") return NaN;
-      return Number(String(v).replace(/,/g, ""));
-    };
-
-    let price = clean(item.z);
+    const price = clean(item.z);
     const yesterday = clean(item.y);
     const volume = clean(item.v);
 
-    if (isNaN(price)) {
-      price =
-        clean(item.a?.split("_")[0]) ||
-        clean(item.b?.split("_")[0]);
+    if (isNaN(price) || price <= 0) {
+      return res.status(404).json({
+        error: "即時價格異常"
+      });
     }
 
-    const change =
-      !isNaN(price) && !isNaN(yesterday)
-        ? price - yesterday
-        : 0;
+    if (isNaN(yesterday) || yesterday <= 0) {
+      return res.status(404).json({
+        error: "昨收價格異常"
+      });
+    }
 
-    const percent =
-      !isNaN(yesterday) && yesterday !== 0
-        ? change / yesterday * 100
-        : 0;
+    const change = price - yesterday;
+    const percent = change / yesterday * 100;
 
     return res.status(200).json({
       code: item.c,
