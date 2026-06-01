@@ -57,6 +57,35 @@ export default async function handler(req, res) {
       "https://www.tpex.org.tw/openapi/v1/tpex_esb_latest_statistics"
     ];
 
+    const getCode = (x) => {
+      return String(
+        x.Code ||
+        x.SecuritiesCompanyCode ||
+        x.SecuritiesCode ||
+        x.StockCode ||
+        x.CompanyCode ||
+        x["證券代號"] ||
+        x["股票代號"] ||
+        x["公司代號"] ||
+        x["代號"] ||
+        ""
+      ).trim();
+    };
+
+    const getNameText = (x) => {
+      return Object.values(x)
+        .filter((v) => typeof v === "string")
+        .join(" ");
+    };
+
+    const normalizeText = (s) => {
+      return String(s || "")
+        .replace(/\s+/g, "")
+        .trim();
+    };
+
+    const kw = normalizeText(keyword);
+
     for (const url of sources) {
       try {
         const r = await fetch(url, {
@@ -72,41 +101,30 @@ export default async function handler(req, res) {
         if (!Array.isArray(data)) continue;
 
         const exact = data.find((x) => {
-          const name =
-            x.Name ||
-            x.CompanyName ||
-            x.SecuritiesCompanyName ||
-            x["證券名稱"] ||
-            x["名稱"] ||
-            "";
+          const code = getCode(x);
+          const text = normalizeText(getNameText(x));
 
-          return name === keyword;
+          return /^\d{4,6}$/.test(code) && text === kw;
         });
 
-        const fuzzy = data.find((x) => {
-          const name =
-            x.Name ||
-            x.CompanyName ||
-            x.SecuritiesCompanyName ||
-            x["證券名稱"] ||
-            x["名稱"] ||
-            "";
+        const contains = data.find((x) => {
+          const code = getCode(x);
+          const text = normalizeText(getNameText(x));
 
-          return name.includes(keyword) || keyword.includes(name);
+          return /^\d{4,6}$/.test(code) && text.includes(kw);
         });
 
-        const item = exact || fuzzy;
+        const reverseContains = data.find((x) => {
+          const code = getCode(x);
+          const text = normalizeText(getNameText(x));
 
-        if (!item) continue;
+          return /^\d{4,6}$/.test(code) && kw.includes(text);
+        });
 
-        const code =
-          item.Code ||
-          item.SecuritiesCompanyCode ||
-          item["證券代號"] ||
-          item["代號"];
+        const item = exact || contains || reverseContains;
 
-        if (code && /^\d{4,6}$/.test(String(code))) {
-          return String(code);
+        if (item) {
+          return getCode(item);
         }
 
       } catch (e) {
