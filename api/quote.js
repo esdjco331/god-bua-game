@@ -21,6 +21,39 @@ export default async function handler(req, res) {
     return Math.round(n * 100) / 100;
   };
 
+  const getFirstPrice = (str) => {
+    if (!str) return NaN;
+
+    const arr = String(str).split("_");
+
+    for (const v of arr) {
+      const n = clean(v);
+      if (Number.isFinite(n) && n > 0) {
+        return n;
+      }
+    }
+
+    return NaN;
+  };
+
+  const getBestPrice = (item) => {
+    const prices = [
+      clean(item.z),
+      clean(item.pz),
+      getFirstPrice(item.a),
+      getFirstPrice(item.b),
+      clean(item.y)
+    ];
+
+    for (const p of prices) {
+      if (Number.isFinite(p) && p > 0) {
+        return p;
+      }
+    }
+
+    return NaN;
+  };
+
   try {
     const url =
       `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
@@ -52,16 +85,10 @@ export default async function handler(req, res) {
     }
 
     const item =
-      candidates.find((x) => clean(x.z) > 0) ||
-      candidates.find((x) => clean(x.pz) > 0) ||
+      candidates.find((x) => getBestPrice(x) > 0) ||
       candidates[0];
 
-    let price = clean(item.z);
-
-    if (!Number.isFinite(price) || price <= 0) {
-      price = clean(item.pz);
-    }
-
+    const price = getBestPrice(item);
     const yesterday = clean(item.y);
     const volume = clean(item.v);
 
