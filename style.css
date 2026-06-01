@@ -208,7 +208,7 @@ body.doom{
 }
 
 .banner-center{
-  width:min(580px,40vw) !important;
+  width:min(600px,40vw) !important;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -267,6 +267,7 @@ body.doom{
   padding:0 20px;
   color:#572800;
   font-weight:900;
+  font-size:20px
   background:linear-gradient(#ffdc83,#ff9d1f);
   cursor:pointer;
 }
