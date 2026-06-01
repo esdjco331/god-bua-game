@@ -416,9 +416,7 @@ async function getStockQuote() {
   }
 
   const tasks = [
-    getStockQuoteFromProxy(code),
-    getStockQuoteFromTwse(code),
-    getStockQuoteFromTpex(code)
+    getStockQuoteFromProxy(code)
   ];
 
   const timeout = new Promise((resolve) => {
