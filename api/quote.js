@@ -1,17 +1,35 @@
 export default async function handler(req, res) {
-  const code = String(req.query.code || "").trim();
+  let input = String(req.query.code || req.query.q || "").trim();
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "no-store");
 
+  const STOCK_NAME_MAP = {
+    "台積電": "2330",
+    "鴻海": "2317",
+    "聯發科": "2454",
+    "廣達": "2382",
+    "緯創": "3231",
+    "群創": "3481",
+    "友達": "2409",
+    "聯鈞": "3450",
+    "國精化": "4722",
+    "科嶠": "4542"
+  };
+
+  if (STOCK_NAME_MAP[input]) {
+    input = STOCK_NAME_MAP[input];
+  }
+
+  const code = input;
+
   if (!/^\d{4,6}$/.test(code)) {
-    return res.status(400).json({ error: "股票代號錯誤" });
+    return res.status(400).json({ error: "請輸入正確股票代號或股票名稱" });
   }
 
   const clean = (v) => {
     if (v === undefined || v === null) return NaN;
     if (v === "" || v === "-" || v === "_" || v === "0.0000") return NaN;
-
     const n = Number(String(v).replace(/,/g, ""));
     return Number.isFinite(n) ? n : NaN;
   };
@@ -23,14 +41,11 @@ export default async function handler(req, res) {
 
   const getFirstPrice = (str) => {
     if (!str) return NaN;
-
     const arr = String(str).split("_");
 
     for (const v of arr) {
       const n = clean(v);
-      if (Number.isFinite(n) && n > 0) {
-        return n;
-      }
+      if (Number.isFinite(n) && n > 0) return n;
     }
 
     return NaN;
@@ -46,9 +61,7 @@ export default async function handler(req, res) {
     ];
 
     for (const p of prices) {
-      if (Number.isFinite(p) && p > 0) {
-        return p;
-      }
+      if (Number.isFinite(p) && p > 0) return p;
     }
 
     return NaN;
@@ -93,15 +106,11 @@ export default async function handler(req, res) {
     const volume = clean(item.v);
 
     if (!Number.isFinite(price) || price <= 0) {
-      return res.status(404).json({
-        error: "即時價格異常"
-      });
+      return res.status(404).json({ error: "即時價格異常" });
     }
 
     if (!Number.isFinite(yesterday) || yesterday <= 0) {
-      return res.status(404).json({
-        error: "昨收價格異常"
-      });
+      return res.status(404).json({ error: "昨收價格異常" });
     }
 
     const change = price - yesterday;
