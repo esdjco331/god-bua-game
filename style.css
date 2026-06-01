@@ -532,7 +532,8 @@ body.doom{
 
   .main-signboard img{
     width:88vw !important;
-    top:-15;
+    position:relative;
+    top:-25px;
   }
 
   .temple-banner{
