@@ -51,20 +51,17 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "查無股票資料" });
     }
 
-    const item = candidates.find((x) => {
-      const price = clean(x.z);
-      const yesterday = clean(x.y);
+    const item =
+      candidates.find((x) => clean(x.z) > 0) ||
+      candidates.find((x) => clean(x.pz) > 0) ||
+      candidates[0];
 
-      return price > 0 && yesterday > 0;
-    });
+    let price = clean(item.z);
 
-    if (!item) {
-      return res.status(404).json({
-        error: "即時行情資料異常，請稍後再試"
-      });
+    if (!Number.isFinite(price) || price <= 0) {
+      price = clean(item.pz);
     }
 
-    const price = clean(item.z);
     const yesterday = clean(item.y);
     const volume = clean(item.v);
 
