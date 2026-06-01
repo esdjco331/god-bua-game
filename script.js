@@ -253,7 +253,7 @@ async function getStockQuoteFromProxy(code) {
   try {
     const url = `https://god-bua-game.vercel.app/api/quote?code=${encodeURIComponent(code)}`;
 
-    const data = await fetchJson(url, 5000);
+    const data = await fetchJson(url, 10000);
 
     if (!data || data.error) {
       return null;
