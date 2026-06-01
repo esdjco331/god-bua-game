@@ -4,32 +4,14 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "no-store");
 
-  const STOCK_NAME_MAP = {
-    "台積電": "2330",
-    "鴻海": "2317",
-    "聯發科": "2454",
-    "廣達": "2382",
-    "緯創": "3231",
-    "群創": "3481",
-    "友達": "2409",
-    "聯鈞": "3450",
-    "國精化": "4722",
-    "科嶠": "4542"
-  };
-
-  if (STOCK_NAME_MAP[input]) {
-    input = STOCK_NAME_MAP[input];
-  }
-
-  const code = input;
-
-  if (!/^\d{4,6}$/.test(code)) {
-    return res.status(400).json({ error: "請輸入正確股票代號或股票名稱" });
+  if (!input) {
+    return res.status(400).json({ error: "請輸入股票代號或股票名稱" });
   }
 
   const clean = (v) => {
     if (v === undefined || v === null) return NaN;
     if (v === "" || v === "-" || v === "_" || v === "0.0000") return NaN;
+
     const n = Number(String(v).replace(/,/g, ""));
     return Number.isFinite(n) ? n : NaN;
   };
@@ -41,6 +23,7 @@ export default async function handler(req, res) {
 
   const getFirstPrice = (str) => {
     if (!str) return NaN;
+
     const arr = String(str).split("_");
 
     for (const v of arr) {
@@ -67,7 +50,89 @@ export default async function handler(req, res) {
     return NaN;
   };
 
+  const nameToCode = async (keyword) => {
+    const sources = [
+      "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_quotes",
+      "https://www.tpex.org.tw/openapi/v1/tpex_esb_latest_statistics"
+    ];
+
+    for (const url of sources) {
+      try {
+        const r = await fetch(url, {
+          headers: {
+            "User-Agent": "Mozilla/5.0"
+          }
+        });
+
+        if (!r.ok) continue;
+
+        const data = await r.json();
+
+        if (!Array.isArray(data)) continue;
+
+        const exact = data.find((x) => {
+          const name =
+            x.Name ||
+            x.CompanyName ||
+            x.SecuritiesCompanyName ||
+            x["證券名稱"] ||
+            x["名稱"] ||
+            "";
+
+          return name === keyword;
+        });
+
+        const fuzzy = data.find((x) => {
+          const name =
+            x.Name ||
+            x.CompanyName ||
+            x.SecuritiesCompanyName ||
+            x["證券名稱"] ||
+            x["名稱"] ||
+            "";
+
+          return name.includes(keyword) || keyword.includes(name);
+        });
+
+        const item = exact || fuzzy;
+
+        if (!item) continue;
+
+        const code =
+          item.Code ||
+          item.SecuritiesCompanyCode ||
+          item["證券代號"] ||
+          item["代號"];
+
+        if (code && /^\d{4,6}$/.test(String(code))) {
+          return String(code);
+        }
+
+      } catch (e) {
+        console.log("股票名稱轉代號失敗", url, e.message);
+      }
+    }
+
+    return null;
+  };
+
   try {
+    let code = input;
+
+    if (!/^\d{4,6}$/.test(code)) {
+      const foundCode = await nameToCode(code);
+
+      if (!foundCode) {
+        return res.status(404).json({
+          error: "查無股票名稱",
+          keyword: input
+        });
+      }
+
+      code = foundCode;
+    }
+
     const url =
       `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${code}.tw|otc_${code}.tw&json=1&delay=0&_=${Date.now()}`;
 
