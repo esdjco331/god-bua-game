@@ -516,7 +516,7 @@ function throwBua() {
   poemEl.innerHTML = "";
 
   if (marketInfoEl) {
-    marketInfoEl.innerHTML = "正在查詢今日行情...";
+    marketInfoEl.innerHTML = "正在查詢今日行情(輸入中文股名會較慢)...";
   }
 
   godDescend();
