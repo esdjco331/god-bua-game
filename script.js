@@ -570,7 +570,8 @@ function renderSavedOracle(saved, quote) {
   document.body.className = saved.bodyClass || "";
 
   resultEl.className = saved.resultClass || "result mid";
-  resultEl.innerHTML = "此股今日已開示";
+  resultEl.innerHTML =
+  `${saved.resultText}｜此股今日已開示`;
 
   meaningEl.innerHTML = saved.meaning || "今日神明已給過方向";
   poemEl.innerHTML = saved.poem || "";
