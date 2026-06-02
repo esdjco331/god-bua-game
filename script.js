@@ -27,6 +27,55 @@ let audioCtx = null;
 
 const quoteCache = {};
 
+/* ===== 每日每股只開示一次 ===== */
+
+const ORACLE_KEY = "god_bua_daily_oracle_v1";
+
+function getTodayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+
+function normalizeStockKey(v) {
+  return String(v || "").trim().toUpperCase();
+}
+
+function getOracleStore() {
+  try {
+    return JSON.parse(localStorage.getItem(ORACLE_KEY)) || {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveOracle(stockKey, data) {
+  const key = normalizeStockKey(stockKey);
+  if (!key) return;
+
+  const store = getOracleStore();
+  const today = getTodayKey();
+
+  if (!store[today]) {
+    store[today] = {};
+  }
+
+  store[today][key] = data;
+
+  localStorage.setItem(ORACLE_KEY, JSON.stringify(store));
+}
+
+function getTodayOracle(stockKey) {
+  const key = normalizeStockKey(stockKey);
+  const store = getOracleStore();
+  const today = getTodayKey();
+
+  if (!key || !store[today]) return null;
+
+  return store[today][key] || null;
+}
+
+/* ===== 籤詩 ===== */
+
 const poems = {
   up: [
     "金光照殿，貴人扶盤。量能若起，紅燭可期。",
@@ -47,6 +96,8 @@ const poems = {
     "黑雲壓城，財氣暫退。明日宜保守，勿貪快利。"
   ]
 };
+
+/* ===== 背景效果 ===== */
 
 function resize() {
   W = canvas.width = kCanvas.width = window.innerWidth;
@@ -120,6 +171,8 @@ function drawKline() {
 setInterval(drawKline, 420);
 drawKline();
 
+/* ===== 音效 ===== */
+
 function getAudioContext() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -189,6 +242,8 @@ function godDescend() {
   }
 }
 
+/* ===== 工具 ===== */
+
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -248,6 +303,8 @@ async function fetchJson(url, timeoutMs = 3000) {
     throw e;
   }
 }
+
+/* ===== 行情查詢 ===== */
 
 async function getStockQuoteFromProxy(code) {
   try {
@@ -439,10 +496,20 @@ async function getStockQuote() {
 
   if (quote) {
     quoteCache[code] = quote;
+
+    if (quote.code) {
+      quoteCache[quote.code] = quote;
+    }
+
+    if (quote.name) {
+      quoteCache[quote.name] = quote;
+    }
   }
 
   return quote;
 }
+
+/* ===== 顯示行情 ===== */
 
 function getStockDisplayFromQuote(q) {
   const code = stockInput.value.trim();
@@ -485,7 +552,35 @@ function renderMarketInfo(q) {
   `;
 }
 
-function throwBua() {
+/* ===== 顯示今日已開示結果 ===== */
+
+function renderSavedOracle(saved, quote) {
+  leftBua.classList.remove("flat");
+  rightBua.classList.remove("flat");
+  stage.classList.remove("throwing");
+
+  if (saved.left === 1) {
+    leftBua.classList.add("flat");
+  }
+
+  if (saved.right === 1) {
+    rightBua.classList.add("flat");
+  }
+
+  document.body.className = saved.bodyClass || "";
+
+  resultEl.className = saved.resultClass || "result mid";
+  resultEl.innerHTML = "此股今日已開示";
+
+  meaningEl.innerHTML = saved.meaning || "今日神明已給過方向";
+  poemEl.innerHTML = saved.poem || "";
+
+  renderMarketInfo(saved.quote || quote || null);
+}
+
+/* ===== 擲筊主程式 ===== */
+
+async function throwBua() {
   const code = stockInput.value.trim();
 
   if (!code) {
@@ -503,6 +598,33 @@ function throwBua() {
   }
 
   throwBtn.disabled = true;
+
+  resultEl.className = "result";
+  resultEl.innerHTML = "請示神明中...";
+  meaningEl.innerHTML = "正在確認今日是否已開示";
+  poemEl.innerHTML = "";
+
+  if (marketInfoEl) {
+    marketInfoEl.innerHTML = "正在查詢今日行情(輸入中文股名會較慢)...";
+  }
+
+  let quote = null;
+
+  try {
+    quote = await getStockQuote();
+  } catch (e) {
+    console.log("行情查詢失敗", e);
+    quote = null;
+  }
+
+  const stockKey = quote && quote.code ? quote.code : code;
+  const saved = getTodayOracle(stockKey);
+
+  if (saved) {
+    renderSavedOracle(saved, quote);
+    throwBtn.disabled = false;
+    return;
+  }
 
   document.body.className = "";
 
@@ -526,7 +648,7 @@ function throwBua() {
 
   stage.classList.add("throwing");
 
-  setTimeout(async () => {
+  setTimeout(() => {
     stage.classList.remove("throwing");
 
     const left = Math.random() > 0.5 ? 1 : 0;
@@ -540,18 +662,11 @@ function throwBua() {
       rightBua.classList.add("flat");
     }
 
-    let quote = null;
-
-    try {
-      quote = await getStockQuote();
-    } catch (e) {
-      console.log("行情查詢失敗", e);
-      quote = null;
-    }
-
     renderMarketInfo(quote);
 
     const stockDisplay = getStockDisplayFromQuote(quote);
+
+    let saveData = null;
 
     if (left !== right) {
       document.body.classList.add("blessed");
@@ -566,6 +681,17 @@ function throwBua() {
         "【上上籤】<br>" + pick(poems.up);
 
       playBell(true);
+
+      saveData = {
+        left,
+        right,
+        bodyClass: "blessed",
+        resultClass: "result up",
+        resultText: "聖杯",
+        meaning: meaningEl.innerHTML,
+        poem: poemEl.innerHTML,
+        quote
+      };
     }
 
     else if (left === 0 && right === 0) {
@@ -579,6 +705,17 @@ function throwBua() {
         "【中平籤】<br>" + pick(poems.mid);
 
       playBell(false);
+
+      saveData = {
+        left,
+        right,
+        bodyClass: "",
+        resultClass: "result mid",
+        resultText: "笑杯",
+        meaning: meaningEl.innerHTML,
+        poem: poemEl.innerHTML,
+        quote
+      };
     }
 
     else {
@@ -594,11 +731,26 @@ function throwBua() {
         "【下下籤】<br>" + pick(poems.down);
 
       playBell(false);
+
+      saveData = {
+        left,
+        right,
+        bodyClass: "doom",
+        resultClass: "result down",
+        resultText: "哭杯",
+        meaning: meaningEl.innerHTML,
+        poem: poemEl.innerHTML,
+        quote
+      };
     }
+
+    saveOracle(stockKey, saveData);
 
     throwBtn.disabled = false;
   }, 1450);
 }
+
+/* ===== 事件 ===== */
 
 throwBtn.addEventListener("click", throwBua);
 
